@@ -5,7 +5,7 @@ SRC = ./cipher_manager/Cipher_test.cpp \
 	../cipher_manager/src/CesarCipher.cpp \
 	../cipher_manager/src/ACipher.cpp
 
-OBJ = $(SRC:.c=.o)
+OBJ = $(SRC:.cpp=.o)
 
 INC = -I../interfaces \
 	-I../cipher_manager/include
@@ -43,10 +43,11 @@ gtest_main.a : gtest-all.o gtest_main.o
 	$(AR) $(ARFLAGS) $@ $^
 
 clean :
-#	rm -f $(OBJ)
+	rm -f $(OBJ)
+	rm -f gtest-all.o
 
 fclean : clean
-#	rm -f $(TEST)
+	rm -f $(TEST)
 
 re : fclean all
 

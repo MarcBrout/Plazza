@@ -5,13 +5,11 @@
 #include "gtest/gtest.h"
 #include "Cipher_test.hpp"
 
-
 XORCipherTest::XORCipherTest() :
         m_xorCipherTest()
 {
     m_xorCipherTest.setKey(10);
 }
-
 
 TEST_F (XORCipherTest, ciphering) {
     m_xorCipherTest.feed("bonjour je m'appelle marc");
