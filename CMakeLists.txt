@@ -5,13 +5,18 @@ set(CMAKE_CXX_STANDARD 14)
 
 
 include_directories(
-        /home/brout_m/Qt5.7.0/5.7/gcc_64/include/
+        /home/brout_m/Qt5.7.0/5.7/gcc_64/include
         /usr/local/include
         /usr/include
+        ./command_generator/include
         ./gui/include
         ./interfaces
         ./cipher_manager/include
         ./unit-tests/googletest/include)
+
+set(CMDGEN
+        ./command_generator/src
+        ./command_generator/include)
 
 set(CIPHERS
         ./cipher_manager/src
@@ -29,7 +34,12 @@ set(CIPHERS-TESTS
         ./unit-tests/cipher_manager
         ./unit-tests/googletest/include)
 
+set(SPLITTER-TESTS
+        ./unit-tests/splitter
+        ./unit-tests/googletest/include)
+
 set(SOURCE_FILES
+        ${CMDGEN}
         ${GUI}
         ${INTERFACES}
         ${CIPHERS})
@@ -40,7 +50,17 @@ set(TEST_SOURCE_FILES
         ${CIPHERS-TESTS}
         ${CIPHERS})
 
+set(TEST_SPLITTER_SOURCE
+        ${INTERFACES}
+        ${SPLITTER}
+        ${SPLITTER-TESTS})
+
+set(TEST_COMMAND_GEN_SOURCE
+        ./unit-tests/command_generator/command_generator_test.cpp
+        ${CMDGEN})
+
 add_executable(plazza ${SOURCE_FILES})
 
 add_executable(cipher_manager_tests ${TEST_SOURCE_FILES})
-
+add_executable(splitter_tests ${TEST_SPLITTER_SOURCE})
+add_executable(cmd_gen_tests ${TEST_COMMAND_GEN_SOURCE})
