@@ -1,6 +1,10 @@
-TEST = cipher_manager_tests
+TEST = tests
 
 SRC = ./cipher_manager/Cipher_test.cpp \
+	./splitter/splitter_test.cpp \
+	./command_generator/command_generator_test.cpp \
+	../command_generator/src/Splitter.cpp \
+	../command_generator/src/CommandGenerator.cpp \
 	../cipher_manager/src/XORCipher.cpp \
 	../cipher_manager/src/CesarCipher.cpp \
 	../cipher_manager/src/ACipher.cpp
@@ -8,7 +12,8 @@ SRC = ./cipher_manager/Cipher_test.cpp \
 OBJ = $(SRC:.cpp=.o)
 
 INC = -I../interfaces \
-	-I../cipher_manager/include
+	-I../cipher_manager/include \
+	-I../command_generator/include
 
 GTEST_DIR = ./googletest
 
