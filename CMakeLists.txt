@@ -12,7 +12,12 @@ include_directories(
         ./gui/include
         ./interfaces
         ./cipher_manager/include
-        ./unit-tests/googletest/include)
+        ./unit-tests/googletest/include
+        ./thread_pool/include)
+
+set(THREADPOOL
+        ./thread_pool/include
+        ./thread_pool/src)
 
 set(CMDGEN
         ./command_generator/src
@@ -39,6 +44,7 @@ set(SPLITTER-TESTS
         ./unit-tests/googletest/include)
 
 set(SOURCE_FILES
+        ${THREADPOOL}
         ${CMDGEN}
         ${GUI}
         ${INTERFACES}
