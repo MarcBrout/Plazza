@@ -13,23 +13,21 @@
 namespace threadpool
 {
     template<typename T>
-    class SafeQ
+        class SafeQ
     {
     public:
         SafeQ() :
-                m_finished(false),
-                m_q({})
+                m_finished(false)
         {
-
         }
 
         ~SafeQ() {};
 
-        void push(T p_value)
+        void push(T &&p_value)
         {
             std::lock_guard<std::mutex> l_lock(m_mutex);
 
-            m_q.push_front(p_value);
+            m_q.push_front(std::move(p_value));
         }
 
         bool tryPop(T *p_value)
@@ -51,11 +49,10 @@ namespace threadpool
 
         void setFinished(void)
         {
-
             m_finished = true;
         }
 
-        void pop(T *p_value)
+        bool pop(T *p_value)
         {
             std::unique_lock<std::mutex> l_lock(m_mutex);
 
@@ -65,7 +62,9 @@ namespace threadpool
             {
                 *p_value = m_q.back();
                 m_q.pop_back();
+                return (true);
             }
+            return (false);
         }
 
         size_t size() const
@@ -84,10 +83,10 @@ namespace threadpool
         }
 
     private:
-        std::atomic<bool>       m_finished;
         std::deque<T>           m_q;
         std::mutex              m_mutex;
         std::condition_variable m_cv;
+        std::atomic<bool>       m_finished;
     };
 
 }

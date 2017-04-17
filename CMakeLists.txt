@@ -40,8 +40,13 @@ set(CIPHERS-TESTS
         ./unit-tests/googletest/include)
 
 set(SPLITTER-TESTS
-        ./unit-tests/splitter
+        ./unit-tests/splitter/splitter_test.cpp
         ./unit-tests/googletest/include)
+
+set(THREADPOOL-TESTS
+        ./unit-tests/thread_pool/thread_pool_tests.cpp
+        ./unit-tests/googletest/include
+        )
 
 set(SOURCE_FILES
         ${THREADPOOL}
@@ -65,8 +70,15 @@ set(TEST_COMMAND_GEN_SOURCE
         ./unit-tests/command_generator/command_generator_test.cpp
         ${CMDGEN})
 
+set(TEST_THREAD_POOL
+        ${INTERFACES}
+        ${THREADPOOL}
+        ${THREADPOOL-TESTS}
+        )
+
 add_executable(plazza ${SOURCE_FILES})
 
 add_executable(cipher_manager_tests ${TEST_SOURCE_FILES})
 add_executable(splitter_tests ${TEST_SPLITTER_SOURCE})
 add_executable(cmd_gen_tests ${TEST_COMMAND_GEN_SOURCE})
+add_executable(thread_pool_test ${TEST_THREAD_POOL})

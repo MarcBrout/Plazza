@@ -2,6 +2,7 @@ TEST = tests
 
 SRC = ./cipher_manager/Cipher_test.cpp \
 	./splitter/splitter_test.cpp \
+	./thread_pool/thread_pool_tests.cpp \
 	./command_generator/command_generator_test.cpp \
 	../command_generator/src/Splitter.cpp \
 	../command_generator/src/CommandGenerator.cpp \
@@ -13,7 +14,8 @@ OBJ = $(SRC:.cpp=.o)
 
 INC = -I../interfaces \
 	-I../cipher_manager/include \
-	-I../command_generator/include
+	-I../command_generator/include \
+	-I../thread_pool/include
 
 GTEST_DIR = ./googletest
 
