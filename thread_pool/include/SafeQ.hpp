@@ -88,7 +88,6 @@ namespace threadpool
         std::condition_variable m_cv;
         std::atomic<bool>       m_finished;
     };
-
 }
 
 #endif //CPP_PLAZZA_SAFEQ_HPP

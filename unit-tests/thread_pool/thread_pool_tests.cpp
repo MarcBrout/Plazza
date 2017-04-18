@@ -11,15 +11,15 @@ typedef std::vector<std::string> result_t;
 
 void read_order(threadpool::ThreadPool<order_t, result_t>::data &data)
 {
-    int id {getpid()};
+ //   int id {getpid()};
     order_t order;
 
     while (!data.s_over)
     {
         if (data.s_orderQ.pop(&order))
         {
-            std::cout << "thread n°" << id
-                      << " pushing : " << order.first << std::endl;
+/*            std::cout << "thread n°" << id
+                      << " pushing : " << order.first << std::endl; */
 
             std::vector<std::string> coucou;
             coucou.push_back(order.first + " IS ");
@@ -42,7 +42,7 @@ void read_order(threadpool::ThreadPool<order_t, result_t>::data &data)
 
 TEST(thread_pool_test, full_test)
 {
-    threadpool::ThreadPool<order_t, result_t> l_threadPool(10);
+    threadpool::ThreadPool<order_t, result_t>       l_threadPool(10);
     threadpool::SafeQ<std::vector<std::string>>     &l_resQ = l_threadPool.getResults();
     std::vector<std::vector<std::string>>           l_vecres;
     bool                                            end_test { false };
@@ -67,7 +67,7 @@ TEST(thread_pool_test, full_test)
     }
 
     ASSERT_EQ(l_vecres.size(), 50);
-
+/*
     int k(0);
     int j(0);
 
@@ -80,6 +80,6 @@ TEST(thread_pool_test, full_test)
         }
         k++;
     }
-
+*/
     l_threadPool.setOver(true);
 }
