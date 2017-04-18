@@ -1,10 +1,7 @@
-PROJECT_DIR=    ./cipher_manager/
-		#./command_generator	\
-		#./communication/socket/	\
-		#./gui/			\
-		#./interfaces/ 		\
-		#./thread_pool/ 		\
-		#./unit-tests/
+PROJECT_DIR=    ./cipher_manager/	\
+		./command_generator	\
+		./communication/socket/	\
+		./gui/
 
 all:
 	@$(foreach c, $(PROJECT_DIR), $(MAKE) -s -C $(c) && ) true

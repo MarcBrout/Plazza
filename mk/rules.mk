@@ -1,5 +1,3 @@
-OBJ_DIR=	./../obj/
-
 OBJ=		$(SRC:$(SRC_DIR)%.cpp=$(OBJ_DIR)%.o)
 
 all:    $(OBJ)
@@ -7,7 +5,6 @@ all:    $(OBJ)
 
 $(OBJ_DIR)%.o:	$(SRC_DIR)%.cpp
 	        echo "compiling $<"
-		@echo "$(CXXFLAGS) $(LOCAL_CXXFLAGS)"
 		$(CXX) -c -o $@ $< $(CXXFLAGS) $(LOCAL_CXXFLAGS)
 
 clean:
