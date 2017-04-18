@@ -50,10 +50,14 @@ namespace threadpool
             }
         }
 
-
         bool isNotFull(size_t maxQuantity) const
         {
             return (m_data.s_orderQ.size() < maxQuantity);
+        }
+
+        bool isOver() const
+        {
+            return (m_data.s_over);
         }
 
         ///

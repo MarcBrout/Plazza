@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 
 include_directories(
-        /home/brout_m/Qt5.7.0/5.7/gcc_64/include
+        /usr/include/Qt5/QtWidgets
         /usr/local/include
         /usr/include
         ./command_generator/include
@@ -13,35 +13,50 @@ include_directories(
         ./interfaces
         ./cipher_manager/include
         ./unit-tests/googletest/include
-        ./thread_pool/include)
+        ./thread_pool/include
+        ./core/include
+)
+
+set(CORE
+        ./core/include
+        ./core/src
+        ./main_plazza.cpp
+        )
 
 set(THREADPOOL
         ./thread_pool/include
-        ./thread_pool/src)
+        ./thread_pool/src
+        )
 
 set(CMDGEN
         ./command_generator/src
-        ./command_generator/include)
+        ./command_generator/include
+        )
 
 set(CIPHERS
         ./cipher_manager/src
-        ./cipher_manager/include)
+        ./cipher_manager/include
+        )
 
 set(INTERFACES
-        ./interfaces)
+        ./interfaces
+        )
 
 set(GUI
         ./gui/src/
-        ./gui/src/main.cpp
-        ./gui/include)
+        main_plazza_gui.cpp
+        ./gui/include
+        )
 
 set(CIPHERS-TESTS
         ./unit-tests/cipher_manager
-        ./unit-tests/googletest/include)
+        ./unit-tests/googletest/include
+        )
 
 set(SPLITTER-TESTS
         ./unit-tests/splitter/splitter_test.cpp
-        ./unit-tests/googletest/include)
+        ./unit-tests/googletest/include
+        )
 
 set(THREADPOOL-TESTS
         ./unit-tests/thread_pool/thread_pool_tests.cpp
@@ -53,22 +68,27 @@ set(SOURCE_FILES
         ${CMDGEN}
         ${GUI}
         ${INTERFACES}
-        ${CIPHERS})
+        ${CIPHERS}
+        ${CORE}
+        )
 
 set(TEST_SOURCE_FILES
         ./unit-tests/cipher_manager/Cipher_test.cpp
         ${INTERFACES}
         ${CIPHERS-TESTS}
-        ${CIPHERS})
+        ${CIPHERS}
+        )
 
 set(TEST_SPLITTER_SOURCE
         ${INTERFACES}
         ${SPLITTER}
-        ${SPLITTER-TESTS})
+        ${SPLITTER-TESTS}
+        )
 
 set(TEST_COMMAND_GEN_SOURCE
         ./unit-tests/command_generator/command_generator_test.cpp
-        ${CMDGEN})
+        ${CMDGEN}
+        )
 
 set(TEST_THREAD_POOL
         ${INTERFACES}

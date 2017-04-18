@@ -5,13 +5,13 @@
 #ifndef CPP_PLAZZA_GUI_HPP
 # define CPP_PLAZZA_GUI_HPP
 
-# include "QtWidgets/QApplication"
-# include "QtWidgets/QWidget"
-# include "QtWidgets/QPushButton"
-# include "QtWidgets/QTextEdit"
-# include "QtWidgets/QCheckBox"
-# include "QtWidgets/QLabel"
-# include "QtWidgets/QFileDialog"
+# include <QApplication>
+# include <QWidget>
+# include <QPushButton>
+# include <QTextEdit>
+# include <QCheckBox>
+# include <QLabel>
+# include <QFileDialog>
 # include "CommandGenerator.hpp"
 
 namespace gui
