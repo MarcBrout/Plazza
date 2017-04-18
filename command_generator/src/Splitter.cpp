@@ -41,3 +41,8 @@ void Splitter::clear()
     m_tokens.clear();
 }
 
+void Splitter::moveTokensTo(std::vector<std::string> &vec)
+{
+    vec = std::move(m_tokens);
+}
+

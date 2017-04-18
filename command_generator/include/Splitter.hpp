@@ -18,6 +18,7 @@ public:
                std::string const &p_delimiters = " ",
                bool p_trim = true);
     std::vector<std::string> const &getTokens() const;
+    void moveTokensTo(std::vector<std::string> &);
     void clear();
 
 private:
