@@ -15,12 +15,18 @@ include_directories(
         ./unit-tests/googletest/include
         ./thread_pool/include
         ./core/include
+        ./file_scrapper/include
 )
 
 set(CORE
         ./core/include
         ./core/src
         ./main_plazza.cpp
+        )
+
+set(FILESCRAPPER
+        ./file_scrapper/src
+        ./file_scrapper/include
         )
 
 set(THREADPOOL
@@ -70,6 +76,7 @@ set(SOURCE_FILES
         ${INTERFACES}
         ${CIPHERS}
         ${CORE}
+        ${FILESCRAPPER}
         )
 
 set(TEST_SOURCE_FILES

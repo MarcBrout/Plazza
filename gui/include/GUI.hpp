@@ -18,7 +18,6 @@ namespace gui
 {
     class GUI : public QWidget
     {
-
     public:
         GUI(int p_width = 800, int p_height = 600, QWidget *p_parent = nullptr);
 
