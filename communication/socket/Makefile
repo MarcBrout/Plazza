@@ -3,7 +3,7 @@ MK_COMMON_DIR=  ./../../mk/
 
 include $(MK_COMMON_DIR)defs.mk $(MK_THIS)local_defs.mk
 
-SRC=    $(addprefix ./src/,     \
+SRC=    $(addprefix $(SRC_DIR), \
 	Socket.cpp		\
 	)
 

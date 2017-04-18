@@ -1,9 +1,11 @@
-OBJ=    $(SRC:.cpp=.o)
+OBJ_DIR=	./../obj/
+
+OBJ=		$(SRC:$(SRC_DIR)%.cpp=$(OBJ_DIR)%.o)
 
 all:    $(OBJ)
 	        #$(CXX) -o $(NAME) $(OBJ) $(LDFLAGS) $(LOCAL_LDFLAGS) && echo  -e '\E[30;32m'"\033[1m[OK] $(BASE_NAME) with options: $(CXXFLAGS) $(LOCAL_CXXFLAGS) $(LDFLAGS) $(LOCAL_LDFLAGS)\033[0m";echo;
 
-%.o:    %.cpp
+$(OBJ_DIR)%.o:	$(SRC_DIR)%.cpp
 	        echo "compiling $<"
 		@echo "$(CXXFLAGS) $(LOCAL_CXXFLAGS)"
 		$(CXX) -c -o $@ $< $(CXXFLAGS) $(LOCAL_CXXFLAGS)
