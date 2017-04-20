@@ -23,7 +23,7 @@ void GraphReader::readGraph(AGraphAst<plazza::Type, std::string> &p_graph)
     }
 }
 
-const std::vector<std::pair<plazza::Information, std::string>> &GraphReader::getM_reader() const
+const std::vector<std::pair<plazza::Information, std::string>> &GraphReader::getReader() const
 {
     return m_reader;
 }
