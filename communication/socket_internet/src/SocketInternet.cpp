@@ -29,13 +29,14 @@ namespace plazza
 
     int SocketInternet::sendAll(std::string const &msg)
     {
-      for (int i = 0; i < m_fds.size(); i++)
+      for (unsigned int i = 0; i < m_fds.size(); i++)
       {
         if (write(m_fds[i].first, msg.c_str(), msg.length()) != static_cast<ssize_t>(msg.length()))
         {
           return (1);
         }
       }
+      return (0);
     }
 
     int SocketInternet::send(int socket, std::string const &msg)
@@ -56,13 +57,13 @@ namespace plazza
 
     int SocketInternet::getActivity()
     {
-      int opt = 1;
       int activity, valread , sd;
       int max_sd = 0;
       fd_set readfds;
+      char buffer[1024];
 
       FD_ZERO(&readfds);
-      for (int i = 0; i < m_fds.size(); i++)
+      for (unsigned int i = 0; i < m_fds.size(); i++)
       {
         sd = m_fds[i].first;
         if (sd > 0)
@@ -74,7 +75,7 @@ namespace plazza
       do
       {
         activity = select(max_sd + 1, &readfds, NULL, NULL, NULL);
-      } while (activity == -1 && erno == EINTR)
+      } while (activity == -1 && errno == EINTR);
       if (activity < 0)
       {
         perror("Select");
@@ -87,7 +88,7 @@ namespace plazza
       }
       else
       {
-        for (int i = 0; i < m_fds.size(); i++) 
+        for (unsigned int i = 0; i < m_fds.size(); i++) 
         {
           sd = m_fds[i].first;
           if (FD_ISSET(sd , &readfds)) 

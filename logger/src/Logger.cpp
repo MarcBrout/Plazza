@@ -14,7 +14,7 @@ namespace plazza
   {
     std::ofstream file;
     file.open(fileName);
-    m_logFiles.push_back(file);
+    m_logFiles.push_back(std::move(file));
   }
 
   void Logger::enableStdout()

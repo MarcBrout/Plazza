@@ -1,8 +1,10 @@
-PROJECT_DIR=    ./cipher_manager/	\
-		./command_generator	\
+PROJECT_DIR=    ./cipher_manager/			\
+		./command_generator			\
 		./communication/socket_internet/	\
-		./gui/			\
-		./core/			\
+		./gui/					\
+		./core/					\
+		./logger/ 				\
+		./file_scrapper/ 			\
 		./ast/
 
 all:
