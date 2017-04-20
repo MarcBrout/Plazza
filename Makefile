@@ -1,7 +1,9 @@
 PROJECT_DIR=    ./cipher_manager/	\
 		./command_generator	\
-		./communication/socket/	\
-		./gui/
+		./communication/socket_internet/	\
+		./gui/			\
+		./core/			\
+		./ast/
 
 all:
 	@$(foreach c, $(PROJECT_DIR), $(MAKE) -s -C $(c) && ) true
