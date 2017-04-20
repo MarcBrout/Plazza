@@ -40,7 +40,7 @@ std::vector<std::string> cipher::XORCipher::cipher() const
     return decipher();
 }
 
-void cipher::XORCipher::setKey(size_t p_key)
+void cipher::XORCipher::setKey(int p_key)
 {
     m_key = p_key;
 }

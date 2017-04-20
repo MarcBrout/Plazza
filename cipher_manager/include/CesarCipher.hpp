@@ -20,6 +20,7 @@ namespace cipher
         CesarCipher &operator=(CesarCipher &&xorCipher) = default;
         std::vector<std::string> cipher() const;
         std::vector<std::string> decipher() const;
+        void setKey(int p_key);
 
     private:
         int                         m_shift;

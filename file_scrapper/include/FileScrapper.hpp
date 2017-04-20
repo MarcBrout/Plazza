@@ -6,23 +6,37 @@
 #define CPP_PLAZZA_FILESCRAPPER_HPP
 
 #include <fstream>
+#include <XORCipher.hpp>
+#include <CesarCipher.hpp>
 #include "ACipher.hpp"
+#include "FileReader.hpp"
+#include "RegexParser.hpp"
 
 namespace plazza
 {
     class FileScrapper
     {
     public:
-        FileScrapper(std::string const& p_filename, cipher::ACipher *p_cipher);
+        FileScrapper(std::string const& p_filename,
+                     plazza::RegexParser *p_regparser);
         ~FileScrapper();
         void scrapFile();
-        void plazza::FileScrapper::moveResultsTo(std::vector<std::string> &out);
+        void moveResultsTo(std::vector<std::string> &out);
+        const std::vector<std::string> &getResults() const;
+        bool isValid();
 
     private:
-        std::ifstream               m_file;
-        cipher::ACipher            *m_cipher;
+        FileReader                  m_fileReader;
+        plazza::RegexParser        *m_regParser;
         std::vector<std::string>    m_results;
+        cipher::XORCipher           m_XORCipher;
+        cipher::CesarCipher         m_CesarCipher;
 
+        void bruteForce(const std::vector<std::string> &p_raw,
+                        cipher::ACipher *p_cipher,
+                        int p_key);
+
+        // Deleted methods
         FileScrapper() = delete;
         FileScrapper(FileScrapper const&) = delete;
         FileScrapper(FileScrapper &&) = delete;

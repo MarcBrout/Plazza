@@ -23,7 +23,7 @@ namespace cipher
         // Methods
         std::vector<std::string> cipher() const;
         std::vector<std::string> decipher() const;
-        void setKey(size_t p_key);
+        void setKey(int p_key);
 
     private:
         size_t                      m_key;
