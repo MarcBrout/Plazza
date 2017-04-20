@@ -27,6 +27,17 @@ namespace plazza
       return (m_fds.back());
     }
 
+    int SocketInternet::sendAll(std::string const &msg)
+    {
+      for (int i = 0; i < m_fds.size(); i++)
+      {
+        if (write(m_fds[i].first, msg.c_str(), msg.length()) != static_cast<ssize_t>(msg.length()))
+        {
+          return (1);
+        }
+      }
+    }
+
     int SocketInternet::send(int socket, std::string const &msg)
     {
       size_t size = msg.length();
@@ -45,6 +56,55 @@ namespace plazza
 
     int SocketInternet::getActivity()
     {
+      int opt = 1;
+      int activity, valread , sd;
+      int max_sd = 0;
+      fd_set readfds;
+
+      FD_ZERO(&readfds);
+      for (int i = 0; i < m_fds.size(); i++)
+      {
+        sd = m_fds[i].first;
+        if (sd > 0)
+          FD_SET(sd, &readfds);
+        if (sd > max_sd)
+          max_sd = sd;
+      }
+
+      do
+      {
+        activity = select(max_sd + 1, &readfds, NULL, NULL, NULL);
+      } while (activity == -1 && erno == EINTR)
+      if (activity < 0)
+      {
+        perror("Select");
+        return (1);
+      }
+      else if (!activity)
+      {
+        std::cerr << "Timed out" << std::endl;
+        //TODO: log.error();
+      }
+      else
+      {
+        for (int i = 0; i < m_fds.size(); i++) 
+        {
+          sd = m_fds[i].first;
+          if (FD_ISSET(sd , &readfds)) 
+          {
+            if ((valread = read(sd, buffer, 1024)) == 0)
+            {
+              std::cerr << "client disconnected" << std::endl;
+              close(sd);
+              //CLOSE FROM VECTOR -> REMOVE PAIR
+            }
+            else
+            {
+              buffer[valread] = '\0';
+            }
+          }
+        }
+      }
       return (0);
     }
 
