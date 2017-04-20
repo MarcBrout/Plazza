@@ -69,6 +69,8 @@ namespace threadpool
 
         size_t size() const
         {
+            std::lock_guard<std::mutex> l_lock(m_mutex);
+
             return (m_q.size());
         }
 
