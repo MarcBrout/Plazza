@@ -60,7 +60,7 @@ void oneProcess(int p_socket, size_t p_max_threads)
         // TODO: read p_socket and send threadpool qsize
         // TODO: read p_socket and get string + enum
 
-        // l_threadp.pushAction()
+        // TODO: push a pair<string, enum> to l_threadp.pushAction()
 
         if (l_threadp.orderSize())
             l_timer.reset();

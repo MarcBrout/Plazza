@@ -57,7 +57,7 @@ namespace threadpool
 
         size_t orderSize() const
         {
-            m_data.s_orderQ.size();
+            return (m_data.s_orderQ.size());
         }
 
         bool isOver() const
