@@ -5,6 +5,7 @@ SRC = ./cipher_manager/Cipher_test.cpp \
 	./file_scrapper/file_scrapper_tests.cpp \
 	./thread_pool/thread_pool_tests.cpp \
 	./command_generator/command_generator_test.cpp \
+	./graph/graph_test.cpp \
 	../command_generator/src/Splitter.cpp \
 	../command_generator/src/CommandGenerator.cpp \
 	../cipher_manager/src/XORCipher.cpp \

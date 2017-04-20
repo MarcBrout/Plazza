@@ -7,6 +7,13 @@
 
 namespace plazza
 {
+    enum Type
+    {
+        COMMA = 0,
+        ORDER,
+        FILE
+    };
+
     enum Information
     {
         PHONE_NUMBER,
