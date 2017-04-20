@@ -27,7 +27,8 @@ void plazza::FileScrapper::scrapFile()
     {
         m_regParser->feed(r_str);
 
-        const std::vector<std::string> &r_reg = m_regParser->getResults();
+        std::vector<std::string> r_reg;
+        m_regParser->moveResultsTo(r_reg);
 
         if (r_reg.size())
             m_results.insert(m_results.end(), r_reg.cbegin(), r_reg.cend());
@@ -37,6 +38,7 @@ void plazza::FileScrapper::scrapFile()
     while (!m_results.size() && l_key < 256)
     {
         bruteForce(l_rawData, &m_XORCipher, l_key);
+        ++l_key;
     }
 
     l_key = -25;

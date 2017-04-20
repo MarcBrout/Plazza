@@ -69,6 +69,11 @@ set(THREADPOOL-TESTS
         ./unit-tests/googletest/include
         )
 
+set(FILESCRAPPER-TESTS
+        ./unit-tests/file_scrapper
+        ./unit-tests/googletest/include
+        )
+
 set(SOURCE_FILES
         ${THREADPOOL}
         ${CMDGEN}
@@ -92,6 +97,10 @@ set(TEST_SPLITTER_SOURCE
         ${SPLITTER-TESTS}
         )
 
+set(TEST_FILE_SCRAPPER
+        ${FILESCRAPPER-TESTS}
+        )
+
 set(TEST_COMMAND_GEN_SOURCE
         ./unit-tests/command_generator/command_generator_test.cpp
         ${CMDGEN}
@@ -109,3 +118,4 @@ add_executable(cipher_manager_tests ${TEST_SOURCE_FILES})
 add_executable(splitter_tests ${TEST_SPLITTER_SOURCE})
 add_executable(cmd_gen_tests ${TEST_COMMAND_GEN_SOURCE})
 add_executable(thread_pool_test ${TEST_THREAD_POOL})
+add_executable(file_scrapper_test ${TEST_FILE_SCRAPPER})

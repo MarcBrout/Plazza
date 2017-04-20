@@ -18,10 +18,10 @@ namespace plazza
     {
     public:
         FileScrapper(std::string const& p_filename,
-                     plazza::RegexParser *p_regparser)
+                     plazza::RegexParser *p_regparser);
         ~FileScrapper();
         void scrapFile();
-        void plazza::FileScrapper::moveResultsTo(std::vector<std::string> &out);
+        void moveResultsTo(std::vector<std::string> &out);
         const std::vector<std::string> &getResults() const;
         bool isValid();
 
