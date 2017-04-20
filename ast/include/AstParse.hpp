@@ -19,6 +19,7 @@ private:
 
     void feedOrder();
     void feedGraph();
+    void checkError();
 public:
     AstParse(std::string &comm);
     ~AstParse() {}

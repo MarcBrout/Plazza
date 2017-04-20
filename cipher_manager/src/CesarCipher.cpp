@@ -54,3 +54,8 @@ std::vector<std::string> cipher::CesarCipher::decipher() const
 {
     return doAction(&cipher::CesarCipher::CesarDecipherString);
 }
+
+void cipher::CesarCipher::setKey(int p_key)
+{
+    m_shift = p_key % 26;
+}

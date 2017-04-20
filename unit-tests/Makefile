@@ -2,6 +2,7 @@ TEST = tests
 
 SRC = ./cipher_manager/Cipher_test.cpp \
 	./splitter/splitter_test.cpp \
+	./file_scrapper/file_scrapper_tests.cpp \
 	./thread_pool/thread_pool_tests.cpp \
 	./command_generator/command_generator_test.cpp \
 	./graph/graph_test.cpp \
@@ -9,14 +10,18 @@ SRC = ./cipher_manager/Cipher_test.cpp \
 	../command_generator/src/CommandGenerator.cpp \
 	../cipher_manager/src/XORCipher.cpp \
 	../cipher_manager/src/CesarCipher.cpp \
-	../cipher_manager/src/ACipher.cpp
+	../cipher_manager/src/ACipher.cpp \
+	../file_scrapper/src/RegexParser.cpp \
+	../file_scrapper/src/FileReader.cpp \
+	../file_scrapper/src/FileScrapper.cpp
 
 OBJ = $(SRC:.cpp=.o)
 
 INC = -I../interfaces \
 	-I../cipher_manager/include \
 	-I../command_generator/include \
-	-I../thread_pool/include
+	-I../thread_pool/include \
+	-I../file_scrapper/include
 
 GTEST_DIR = ./googletest
 

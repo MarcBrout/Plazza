@@ -31,7 +31,9 @@ set(FILESCRAPPER
         )
 
 set(THREADPOOL
-        ./thread_pool/include)
+        ./thread_pool/include
+        ./thread_pool/src
+        )
 
 set(CMDGEN
         ./command_generator/src
@@ -72,6 +74,11 @@ set(THREADPOOL-TESTS
         ./unit-tests/googletest/include
         )
 
+set(FILESCRAPPER-TESTS
+        ./unit-tests/file_scrapper
+        ./unit-tests/googletest/include
+        )
+
 set(GRAPH_TESTS
         ./unit-tests/graph/graph_test.cpp
         ./unit-tests/googletest/include)
@@ -100,6 +107,10 @@ set(TEST_SPLITTER_SOURCE
         ${SPLITTER-TESTS}
         )
 
+set(TEST_FILE_SCRAPPER
+        ${FILESCRAPPER-TESTS}
+        )
+
 set(TEST_COMMAND_GEN_SOURCE
         ./unit-tests/command_generator/command_generator_test.cpp
         ${CMDGEN}
@@ -123,3 +134,4 @@ add_executable(splitter_tests ${TEST_SPLITTER_SOURCE})
 add_executable(cmd_gen_tests ${TEST_COMMAND_GEN_SOURCE})
 add_executable(thread_pool_test ${TEST_THREAD_POOL})
 add_executable(graph_test ${TEST_GRAPH})
+add_executable(file_scrapper_test ${TEST_FILE_SCRAPPER})

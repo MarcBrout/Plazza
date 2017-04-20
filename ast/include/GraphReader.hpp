@@ -20,7 +20,7 @@ public:
 
     void readGraph(AGraphAst<plazza::Type, std::string> &);
 
-    const std::vector<std::pair<plazza::Information, std::string>> &getM_reader() const;
+    const std::vector<std::pair<plazza::Information, std::string>> &getReader() const;
 };
 
 
