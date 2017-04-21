@@ -8,7 +8,7 @@
 #include <functional>
 #include <unistd.h>
 
-namespace fork
+namespace plazza
 {
     template <typename ...Args>
     class Forker
