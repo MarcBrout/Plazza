@@ -6,6 +6,7 @@
 #define CPP_PLAZZA_PROCESSMANAGER_HPP
 
 #include <vector>
+#include <Enums.hpp>
 #include "ICommunication.hpp"
 #include "Forker.hpp"
 
@@ -17,9 +18,9 @@ namespace plazza
         ProcessManager(ICommunication *p_com);
         ~ProcessManager() {};
 
-        void process(std::vector<std::string, std::string> &orders,
-                     std::vector<std::string> &results,
+        void process(std::vector<std::pair<std::string, plazza::Information>> &orders,
                      size_t p_max_threads);
+        void getResults(std::vector<std::string> &results);
 
     private:
         ICommunication              *m_com;

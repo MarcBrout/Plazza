@@ -32,7 +32,6 @@ set(FILESCRAPPER
 
 set(THREADPOOL
         ./thread_pool/include
-        ./thread_pool/src
         )
 
 set(CMDGEN

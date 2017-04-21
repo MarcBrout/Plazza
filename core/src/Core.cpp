@@ -16,5 +16,11 @@ int plazza::Core::run()
     m_noGui = std::make_unique<NoGUI>();
     if (m_noGui == nullptr)
         throw (std::bad_alloc());
-    return (m_noGui->run());
+    return (m_noGui->run(m_max_threads));
+}
+
+plazza::Core::Core() :
+    m_max_threads(5)
+{
+
 }

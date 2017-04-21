@@ -11,25 +11,21 @@ static std::vector<std::string> g_order = {
         "IP_ADDRESS"
 };
 
-AstParse::AstParse(std::string &c_comm) : m_command(c_comm), m_graph(AGraphAst<plazza::Type, std::string>(plazza::COMMA, ";"))
+plazza::AstParse::AstParse() :
+        m_graph(AGraphAst<plazza::Type, std::string>(plazza::COMMA, ";"))
 {
 }
 
-void AstParse::parse()
-{
-    feedOrder();
-    feedGraph();
-}
-
-void AstParse::feedOrder()
+void plazza::AstParse::feedCommand(std::string const& p_command)
 {
     Splitter l_split;
 
-    l_split.split(m_command, ";");
+    l_split.split(p_command, ";");
     l_split.moveTokensTo(m_order);
+    feedGraph();
 }
 
-void AstParse::feedGraph()
+void plazza::AstParse::feedGraph()
 {
     Splitter l_split;
     for (std::string l_order : m_order)
@@ -58,12 +54,12 @@ void AstParse::feedGraph()
     }
 }
 
-AGraphAst<plazza::Type, std::string> AstParse::getGraph()
+AGraphAst<plazza::Type, std::string> &plazza::AstParse::getGraph()
 {
     return m_graph;
 }
 
-void AstParse::checkError()
+void plazza::AstParse::checkError()
 {
     if (m_file.size() < 2)
         throw std::invalid_argument("Order usage: FILE + INFORMATION_TO_GET");
@@ -78,4 +74,3 @@ void AstParse::checkError()
     if (count > 1)
         throw std::invalid_argument("Order must have just one INFORMATION_TO_GET");
 }
-

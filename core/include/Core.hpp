@@ -13,11 +13,14 @@ namespace plazza
     class Core : public ICore
     {
     public:
+        Core();
+        ~Core(){};
         void initialize(int ac, char **av, char **env);
         int run();
 
     private:
-        std::unique_ptr<NoGUI> m_noGui;
+        std::unique_ptr<NoGUI>  m_noGui;
+        size_t                  m_max_threads;
     };
 }
 

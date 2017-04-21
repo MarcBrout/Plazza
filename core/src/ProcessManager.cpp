@@ -59,8 +59,8 @@ void oneProcess(int p_socket, size_t p_max_threads)
     while (!l_timer.reached())
     {
         std::string w_result;
-        // TODO: read p_socket and send threadpool qsize
-        // TODO: read p_socket and get/parse string + enum
+        m_com->answerAskSizeQueue(); // TODO: code it
+        m_com->answerAskOrder(); // TODO: code it -> return pair for execute order
 
         // TODO: push a pair<string, enum> to l_threadp.pushAction()
 
@@ -69,6 +69,7 @@ void oneProcess(int p_socket, size_t p_max_threads)
 
         if (l_threadp.tryPop(&w_result))
         {
+          m_com->send(p_socket, w_result);
             // TODO: send results to p_socket
         }
     }
@@ -98,34 +99,33 @@ int plazza::ProcessManager::load_balancer(std::vector<std::pair<int, size_t >> c
     return l_pos;
 }
 
-void plazza::ProcessManager::process(std::vector<std::string, std::string> &orders,
-                                     std::vector<std::string> &results,
+void plazza::ProcessManager::process(std::vector<std::pair<std::string, plazza::Information>> &orders,
                                      size_t p_max_threads)
 {
-
-    (void)results; //TODO: remove
-
     while (orders.size())
     {
         std::vector<std::pair<int, size_t>> w_child_qs;
 
-        // TODO: retrieve all child socket q size and put them into w_child_qs
-        // sendALL();
+        m_com->getAllSizeQueue(w_child_qs);
 
         int w_socket { load_balancer(w_child_qs, p_max_threads) };
         if (w_socket > 0)
         {
-            // TODO: send order to socket
+            // TODO: GET ORDER
+            m_com->send(w_socket, nullptr);
         }
         else
         {
             int w_new_socket {-1};
-            // TODO: create new socket
+           w_new_socket = m_com->addPair().second;
 
             m_forker.create_child(oneProcess, w_new_socket, p_max_threads);
         }
     }
+}
 
-    // TODO : get all answers from sockets and put them into results
-
+void plazza::ProcessManager::getResults(std::vector<std::string> &results)
+{
+    // TODO get results from sockets
+    m_com->getActivity(); // TODO: push string into resutl
 }

@@ -22,7 +22,7 @@ namespace plazza
     std::pair<int, int> &SocketInternet::addPair()
     {
       int fd[2];
-      socketpair(AF_INET, SOCK_STREAM, 0, fd);
+      socketpair(AF_UNIX, SOCK_STREAM, 0, fd);
       m_fds.push_back(std::make_pair(fd[0], fd[1]));
       return (m_fds.back());
     }
@@ -105,9 +105,9 @@ namespace plazza
             }
           }
         }
+        return (0);
       }
-      return (0);
-    }
 
+    }
   }
 }
