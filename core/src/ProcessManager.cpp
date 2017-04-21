@@ -58,7 +58,7 @@ void oneProcess(int p_socket, size_t p_max_threads)
     {
         std::string w_result;
         // TODO: read p_socket and send threadpool qsize
-        // TODO: read p_socket and get string + enum
+        // TODO: read p_socket and get/parse string + enum
 
         // TODO: push a pair<string, enum> to l_threadp.pushAction()
 
