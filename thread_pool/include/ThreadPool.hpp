@@ -55,6 +55,11 @@ namespace threadpool
             return (m_data.s_orderQ.size() < maxQuantity);
         }
 
+        size_t orderSize()
+        {
+            return (m_data.s_orderQ.size());
+        }
+
         bool isOver() const
         {
             return (m_data.s_over);
@@ -112,6 +117,11 @@ namespace threadpool
         threadpool::SafeQ<ResultT> &getResults()
         {
             return (m_data.s_resultQ);
+        }
+
+        bool tryPop(ResultT *result)
+        {
+            return (m_data.s_resultQ.tryPop(result));
         }
 
     private:

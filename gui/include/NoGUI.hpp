@@ -5,7 +5,7 @@
 #ifndef CPP_PLAZZA_NOGUI_HPP
 #define CPP_PLAZZA_NOGUI_HPP
 
-#include <ThreadPool.hpp>
+#include "ThreadPool.hpp"
 
 namespace plazza
 {

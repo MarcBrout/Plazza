@@ -8,16 +8,18 @@ namespace plazza
 {
   namespace com
   {
-    class Socket: public ICommunication
+    class SocketInternet: public ICommunication
     {
       public:
-        Socket();
-        virtual ~Socket();
+        SocketInternet();
+        virtual ~SocketInternet();
         virtual int send(int socket, std::string const &msg);
         virtual int receive(int socket, std::string const &msg);
         virtual int getActivity();
+        std::pair<int, int> &addPair();
+        int sendAll(std::string const &msg);
       private:
-        std::vector<int> m_fds;
+        std::vector<std::pair<int, int> > m_fds;
         int m_master;
         int m_maxClient;
     };
