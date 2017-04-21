@@ -12,7 +12,7 @@ static std::map<std::string, plazza::Information > g_map =
                 {"IP_ADDRESS", plazza::IP_ADDRESS}
         };
 
-void GraphReader::readGraph(AGraphAst<plazza::Type, std::string> &p_graph)
+void plazza::GraphReader::readGraph(AGraphAst<plazza::Type, std::string> &p_graph)
 {
     for (AGraphAst<plazza::Type, std::string>::s_node &l_order : p_graph.getGraph().begin()->s_link)
     {
@@ -23,7 +23,7 @@ void GraphReader::readGraph(AGraphAst<plazza::Type, std::string> &p_graph)
     }
 }
 
-const std::vector<std::pair<plazza::Information, std::string>> &GraphReader::getReader() const
+const std::vector<std::pair<plazza::Information, std::string>> &plazza::GraphReader::getReader() const
 {
     return m_reader;
 }
