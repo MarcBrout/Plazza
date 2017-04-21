@@ -23,13 +23,13 @@ namespace plazza
                 return (true);
             else if (l_pid < 0)
                 return (false);
-            fn(args);
+            fn(args...);
             std::exit(EXIT_SUCCESS);
         };
 
         bool operator()(std::function<void(Args...)> fn, Args... args)
         {
-            return create_child(fn, args);
+            return create_child(fn, args...);
         };
     };
 }

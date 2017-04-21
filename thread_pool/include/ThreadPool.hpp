@@ -55,7 +55,7 @@ namespace threadpool
             return (m_data.s_orderQ.size() < maxQuantity);
         }
 
-        size_t orderSize() const
+        size_t orderSize()
         {
             return (m_data.s_orderQ.size());
         }

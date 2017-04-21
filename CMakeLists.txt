@@ -22,7 +22,7 @@ include_directories(
 set(CORE
         ./core/include
         ./core/src
-        core/main_plazza.cpp
+        core/src/main_plazza.cpp
         )
 
 set(FILESCRAPPER
@@ -55,7 +55,7 @@ set(INTERFACES
 
 set(GUI
         ./gui/src/
-        core/main_plazza_gui.cpp
+        core/src/main_plazza_gui.cpp
         ./gui/include
         )
 

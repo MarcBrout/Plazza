@@ -13,6 +13,7 @@ namespace plazza
     class RegexParser
     {
     public:
+        ~RegexParser() {};
         RegexParser(std::string const& p_reg);
         bool feed(std::string const& p_str);
         void moveResultsTo(std::vector<std::string> &p_out);
@@ -22,6 +23,13 @@ namespace plazza
     private:
         std::regex                  m_regex;
         std::vector<std::string>    m_results;
+
+        // Deleted methods
+        RegexParser() = delete;
+        RegexParser(RegexParser const&) = delete;
+        RegexParser(RegexParser &&) = delete;
+        RegexParser &operator=(RegexParser const&) = delete;
+        RegexParser &operator=(RegexParser &&) = delete;
     };
 }
 

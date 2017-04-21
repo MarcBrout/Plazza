@@ -15,7 +15,7 @@ timer::Timer::Timer(int p_duree) :
 bool timer::Timer::reached() const
 {
     return (m_started && m_starting_point -
-            std::chrono::system_clock<std::chrono::milliseconds>::now() >
+            std::chrono::system_clock::now() >
             m_duree);
 }
 
@@ -27,5 +27,5 @@ void timer::Timer::reset()
 void timer::Timer::start()
 {
     m_started = true;
-    m_starting_point = std::chrono::system_clock<std::chrono::milliseconds>::now();
+    m_starting_point = std::chrono::system_clock::now();
 }

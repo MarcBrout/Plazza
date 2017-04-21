@@ -11,14 +11,14 @@
 void oneThread(threadpool::ThreadPool<std::pair<std::string, plazza::Information>, std::string>::data &p_data)
 {
     std::pair<std::string, plazza::Information> l_order;
-    std::map<plazza::Information, plazza::RegexParser> l_map =
-            {
-                    {plazza::Information::IP_ADDRESS,
-                            plazza::RegexParser("[0-255].[0-255].[0-255].[0-255]")},
-                    {plazza::Information::EMAIL_ADDRESS,
-                            plazza::RegexParser("[a-zA-Z0-9_.-]+@[a-zA-Z0-9_.-]+")},
-                    {plazza::Information::PHONE_NUMBER,
-                            plazza::RegexParser("(?:(?:\\+|00)33|0)\\s*[1-9](?:[\\s.-]*\\d{2}){4}")}
+    plazza::RegexParser l_reg_ip("[0-255].[0-255].[0-255].[0-255]");
+    plazza::RegexParser l_reg_email("[a-zA-Z0-9_.-]+@[a-zA-Z0-9_.-]+");
+    plazza::RegexParser l_reg_phone("(?:(?:\\+|00)33|0)\\s*[1-9](?:[\\s.-]*\\d{2}){4}");
+
+    std::map<plazza::Information, plazza::RegexParser*> l_map = {
+                    {plazza::Information::IP_ADDRESS, &l_reg_ip},
+                    {plazza::Information::EMAIL_ADDRESS, &l_reg_email},
+                    {plazza::Information::PHONE_NUMBER, &l_reg_phone}
             };
 
     while (!p_data.s_over)
@@ -27,7 +27,7 @@ void oneThread(threadpool::ThreadPool<std::pair<std::string, plazza::Information
         {
             try
             {
-                plazza::FileScrapper w_file_scrapper(l_order.first, &l_map[l_order.second]);
+                plazza::FileScrapper w_file_scrapper(l_order.first, l_map[l_order.second]);
                 std::vector<std::string> w_results;
                 if (w_file_scrapper.isValid())
                 {
@@ -51,6 +51,8 @@ void oneProcess(int p_socket, size_t p_max_threads)
 {
     threadpool::ThreadPool<std::pair<std::string, plazza::Information>, std::string> l_threadp(p_max_threads);
     timer::Timer l_timer(5000);
+
+    (void)p_socket; // TODO: remove
 
     l_timer.start();
     l_threadp.run(oneThread);
@@ -100,6 +102,8 @@ void plazza::ProcessManager::process(std::vector<std::string, std::string> &orde
                                      std::vector<std::string> &results,
                                      size_t p_max_threads)
 {
+
+    (void)results; //TODO: remove
 
     while (orders.size())
     {
