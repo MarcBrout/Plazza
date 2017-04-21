@@ -110,6 +110,7 @@ void plazza::ProcessManager::process(std::vector<std::string, std::string> &orde
         std::vector<std::pair<int, size_t>> w_child_qs;
 
         // TODO: retrieve all child socket q size and put them into w_child_qs
+        // sendALL();
 
         int w_socket { load_balancer(w_child_qs, p_max_threads) };
         if (w_socket > 0)

@@ -37,6 +37,9 @@ plazza::NoGUI::NoGUI()
 int plazza::NoGUI::run()
 {
     std::string l_line;
+    //Logger
+    //SocketInternet
+    //ProcessManager
 
     m_threadpool.run(read_cin);
     while (!m_threadpool.isOver())

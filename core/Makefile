@@ -8,6 +8,8 @@ SRC=    $(addprefix $(SRC_DIR), \
 	CoreGui.cpp 		\
 	ProcessManager.cpp 	\
 	Timer.cpp 		\
+	main_plazza.cpp		\
+	main_plazza_gui.cpp	\
 	)
 
 include $(MK_COMMON_DIR)rules.mk
