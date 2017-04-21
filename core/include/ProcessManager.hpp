@@ -17,9 +17,16 @@ namespace plazza
         ProcessManager(ICommunication *p_com);
         ~ProcessManager() {};
 
+        void process(std::vector<std::string, std::string> &orders,
+                     std::vector<std::string> &results,
+                     size_t p_max_threads);
+
     private:
         ICommunication              *m_com;
         fork::Forker<int, size_t>   m_forker;
+
+        int load_balancer(std::vector<std::pair<int, size_t >> const& p_sockets,
+                          size_t p_max_threads);
 
         // Deleted Methods
         ProcessManager(ProcessManager const&) = delete;

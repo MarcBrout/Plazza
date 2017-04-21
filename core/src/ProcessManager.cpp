@@ -8,7 +8,7 @@
 #include "ThreadPool.hpp"
 #include "ProcessManager.hpp"
 
-void scrap_file(threadpool::ThreadPool<std::pair<std::string, plazza::Information>, std::string>::data &p_data)
+void oneThread(threadpool::ThreadPool<std::pair<std::string, plazza::Information>, std::string>::data &p_data)
 {
     std::pair<std::string, plazza::Information> l_order;
     std::map<plazza::Information, plazza::RegexParser> l_map =
@@ -53,7 +53,7 @@ void oneProcess(int p_socket, size_t p_max_threads)
     timer::Timer l_timer(5000);
 
     l_timer.start();
-    l_threadp.run(scrap_file);
+    l_threadp.run(oneThread);
     while (!l_timer.reached())
     {
         std::string w_result;
@@ -74,7 +74,53 @@ void oneProcess(int p_socket, size_t p_max_threads)
 }
 
 plazza::ProcessManager::ProcessManager(ICommunication *p_com) :
-
+        m_com(p_com)
 {
+
+}
+
+int plazza::ProcessManager::load_balancer(std::vector<std::pair<int, size_t >> const& p_sockets,
+                                          size_t p_max_threads)
+{
+    int l_pos {-1};
+    size_t l_smallest {p_max_threads};
+
+    for (size_t r_pos = 0; r_pos < p_sockets.size(); ++r_pos)
+    {
+        if (p_sockets[r_pos].second < l_smallest)
+        {
+            l_smallest = r_pos;
+        }
+    }
+
+    return l_pos;
+}
+
+void plazza::ProcessManager::process(std::vector<std::string, std::string> &orders,
+                                     std::vector<std::string> &results,
+                                     size_t p_max_threads)
+{
+
+    while (orders.size())
+    {
+        std::vector<std::pair<int, size_t>> w_child_qs;
+
+        // TODO: retrieve all child socket q size and put them into w_child_qs
+
+        int w_socket { load_balancer(w_child_qs, p_max_threads) };
+        if (w_socket > 0)
+        {
+            // TODO: send order to socket
+        }
+        else
+        {
+            int w_new_socket {-1};
+            // TODO: create new socket
+
+            m_forker.create_child(oneProcess, w_new_socket, p_max_threads);
+        }
+    }
+
+    // TODO : get all answers from sockets and put them into results
 
 }
