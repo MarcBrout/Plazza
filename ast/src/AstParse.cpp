@@ -11,22 +11,18 @@ static std::vector<std::string> g_order = {
         "IP_ADDRESS"
 };
 
-plazza::AstParse::AstParse() : m_command(""), m_graph(AGraphAst<plazza::Type, std::string>(plazza::COMMA, ";"))
+plazza::AstParse::AstParse() :
+        m_graph(AGraphAst<plazza::Type, std::string>(plazza::COMMA, ";"))
 {
 }
 
-void plazza::AstParse::parse()
-{
-    feedOrder();
-    feedGraph();
-}
-
-void plazza::AstParse::feedOrder()
+void plazza::AstParse::feedCommand(std::string const& p_command)
 {
     Splitter l_split;
 
-    l_split.split(m_command, ";");
+    l_split.split(p_command, ";");
     l_split.moveTokensTo(m_order);
+    feedGraph();
 }
 
 void plazza::AstParse::feedGraph()
@@ -58,7 +54,7 @@ void plazza::AstParse::feedGraph()
     }
 }
 
-AGraphAst<plazza::Type, std::string> plazza::AstParse::getGraph()
+AGraphAst<plazza::Type, std::string> &plazza::AstParse::getGraph()
 {
     return m_graph;
 }
@@ -77,9 +73,4 @@ void plazza::AstParse::checkError()
     }
     if (count > 1)
         throw std::invalid_argument("Order must have just one INFORMATION_TO_GET");
-}
-
-void plazza::AstParse::setCommand(std::string &p_comm)
-{
-    m_command = p_comm;
 }

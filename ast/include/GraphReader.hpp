@@ -15,14 +15,14 @@ namespace plazza
     class GraphReader
     {
     private:
-        std::vector<std::pair<plazza::Information, std::string>> m_reader;
+        std::vector<std::pair<std::string, plazza::Information>> m_reader;
     public:
         GraphReader() = default;
         ~GraphReader() = default;
 
         void readGraph(AGraphAst<plazza::Type, std::string> &);
 
-        const std::vector<std::pair<plazza::Information, std::string>> &getReader() const;
+        const std::vector<std::pair<std::string, plazza::Information>> &getReader() const;
     };
 }
 

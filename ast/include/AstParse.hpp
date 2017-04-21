@@ -14,22 +14,18 @@ namespace plazza
     class AstParse
     {
     private:
-        std::string m_command;
         std::vector<std::string> m_order;
         std::vector<std::string> m_file;
         AGraphAst<plazza::Type, std::string> m_graph;
 
-        void feedOrder();
-        void feedGraph();
         void checkError();
+        void feedGraph();
 
     public:
         AstParse();
-        ~AstParse()
-        {}
-        void parse();
-        void setCommand(std::string &);
-        AGraphAst<plazza::Type, std::string> getGraph();
+        ~AstParse() {};
+        AGraphAst<plazza::Type, std::string> &getGraph();
+        void feedCommand(std::string const& p_command);
     };
 }
 

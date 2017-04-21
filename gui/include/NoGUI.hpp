@@ -13,7 +13,7 @@ namespace plazza
     {
     public:
         NoGUI();
-        int run();
+        int run(size_t p_thread_max);
 
     private:
         threadpool::ThreadPool<bool, std::string>  m_threadpool;

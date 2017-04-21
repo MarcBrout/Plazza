@@ -98,13 +98,9 @@ int plazza::ProcessManager::load_balancer(std::vector<std::pair<int, size_t >> c
     return l_pos;
 }
 
-void plazza::ProcessManager::process(std::vector<std::string, std::string> &orders,
-                                     std::vector<std::string> &results,
+void plazza::ProcessManager::process(std::vector<std::pair<std::string, plazza::Information>> &orders,
                                      size_t p_max_threads)
 {
-
-    (void)results; //TODO: remove
-
     while (orders.size())
     {
         std::vector<std::pair<int, size_t>> w_child_qs;
@@ -124,7 +120,9 @@ void plazza::ProcessManager::process(std::vector<std::string, std::string> &orde
             m_forker.create_child(oneProcess, w_new_socket, p_max_threads);
         }
     }
+}
 
-    // TODO : get all answers from sockets and put them into results
-
+void plazza::ProcessManager::getResults(std::vector<std::string> &results)
+{
+    // TODO get results from sockets
 }

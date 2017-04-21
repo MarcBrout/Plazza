@@ -5,6 +5,9 @@
 #include <iostream>
 #include <mutex>
 #include <zconf.h>
+#include <AstParse.hpp>
+#include <GraphReader.hpp>
+#include <ProcessManager.hpp>
 #include "NoGUI.hpp"
 
 void read_cin(threadpool::ThreadPool<bool, std::string>::Data &p_data)
@@ -34,9 +37,14 @@ plazza::NoGUI::NoGUI()
 
 }
 
-int plazza::NoGUI::run()
+int plazza::NoGUI::run(size_t p_thread_max)
 {
     std::string l_line;
+    plazza::AstParse    l_parser;
+    plazza::GraphReader l_graph_reader;
+    plazza::ProcessManager  l_process_manager(/* put icom ptr here */ nullptr);
+    std::vector<std::pair<std::string, plazza::Information>> l_orders;
+    std::vector<std::string> l_results;
 
     m_threadpool.run(read_cin);
     while (!m_threadpool.isOver())
@@ -49,9 +57,17 @@ int plazza::NoGUI::run()
             }
             else
             {
-              std::cout << l_line << std::endl;
+                std::cout << l_line << std::endl;
+                l_parser.feedCommand(l_line);
+                l_graph_reader.readGraph(l_parser.getGraph());
+                l_orders = std::move(l_graph_reader.getReader());
+                l_process_manager.process(l_orders, p_thread_max);
             }
-            //TODO : PARSE STRING AND EXECUTE COMMAND HERE
+        }
+        l_process_manager.getResults(l_results);
+        for (std::string &r_result : l_results)
+        {
+            std::cout << r_result << std::endl;
         }
         usleep(5000);
     }
