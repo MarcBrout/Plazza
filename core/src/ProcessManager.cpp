@@ -76,8 +76,8 @@ void oneProcess(ICommunication *p_com, int p_socket, size_t p_max_threads)
         std::string w_result;
         std::string w_rawOrder;
 
-        p_com->answerAskSizeQueue(); // TODO: code it
-        w_rawOrder = p_com->answerAskOrder(); // TODO: code it -> return pair for execute order
+        p_com->answerAskSizeQueue(p_socket, l_threadp.orderSize());
+        w_rawOrder = p_com->answerAskOrder();
         l_threadp.pushAction(parseOrder(w_rawOrder));
 
         if (l_threadp.orderSize())
