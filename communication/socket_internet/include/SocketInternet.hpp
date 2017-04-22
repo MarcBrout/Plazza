@@ -14,12 +14,12 @@ namespace plazza
         SocketInternet();
         virtual ~SocketInternet();
         virtual int send(int socket, std::string const &msg);
-        virtual int receive(int socket, std::string const &msg);
+        virtual int receive(int socket, std::string &msg);
         virtual int getActivity();
         virtual std::pair<int, int> &addPair();
         virtual int sendAll(std::string const &msg);
         virtual int getAllSizeQueue(std::vector<std::pair<int, std::size_t> > &);
-        virtual int answerAskSizeQueue(); // if parent ask for size queue -> answer him
+        virtual int answerAskSizeQueue(int socket, std::size_t); // if parent ask for size queue -> answer him
         virtual int answerAskOrder(); // if order receive, execute it
       private:
         std::vector<std::pair<int, int> > m_fds;

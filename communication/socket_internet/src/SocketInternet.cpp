@@ -3,6 +3,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <sstream>
 #include <iostream>
 #include <string>
 #include "SocketInternet.hpp"
@@ -47,11 +48,43 @@ namespace plazza
       return (0);
     }
 
-    int SocketInternet::receive(int socket, std::string const &msg)
+    int SocketInternet::receive(int socket, std::string &msg)
     {
       char buffer[4096] = {0};;
       if (recv(socket, buffer, 4095, 0) == 0)
         return (1);
+      msg = buffer;
+      return (0);
+    }
+
+    int SocketInternet::getAllSizeQueue(std::vector<std::pair<int, std::size_t> > &vec)
+    {
+      for (size_t i = 0; i < m_fds.size(); i++)
+      {
+        send(m_fds[i].first, "size");
+        std::string res;
+        receive(m_fds[i].first, res);
+        std::size_t size(std::atol(res.c_str()));
+        vec.push_back(std::make_pair(m_fds[i].first, size));
+      }
+      return (0);
+    }
+
+    int SocketInternet::answerAskSizeQueue(int sock, std::size_t size)
+    {
+      std::string res;
+      receive(sock, res);
+      if (res == "size")
+      {
+        std::stringstream stream;
+        stream << size;
+        send(sock, stream.str());
+      }
+      return (0);
+    }
+
+    int SocketInternet::answerAskOrder()
+    {
       return (0);
     }
 
