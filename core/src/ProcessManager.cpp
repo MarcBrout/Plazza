@@ -7,6 +7,7 @@
 #include "Timer.hpp"
 #include "ThreadPool.hpp"
 #include "ProcessManager.hpp"
+#include "SocketInternet.hpp"
 
 void oneThread(threadpool::ThreadPool<std::pair<std::string, plazza::Information>, std::string>::data &p_data)
 {
@@ -16,10 +17,10 @@ void oneThread(threadpool::ThreadPool<std::pair<std::string, plazza::Information
     plazza::RegexParser l_reg_phone("(?:(?:\\+|00)33|0)\\s*[1-9](?:[\\s.-]*\\d{2}){4}");
 
     std::map<plazza::Information, plazza::RegexParser*> l_map = {
-                    {plazza::Information::IP_ADDRESS, &l_reg_ip},
-                    {plazza::Information::EMAIL_ADDRESS, &l_reg_email},
-                    {plazza::Information::PHONE_NUMBER, &l_reg_phone}
-            };
+            {plazza::Information::IP_ADDRESS, &l_reg_ip},
+            {plazza::Information::EMAIL_ADDRESS, &l_reg_email},
+            {plazza::Information::PHONE_NUMBER, &l_reg_phone}
+    };
 
     while (!p_data.s_over)
     {
@@ -47,20 +48,18 @@ void oneThread(threadpool::ThreadPool<std::pair<std::string, plazza::Information
     }
 }
 
-void oneProcess(int p_socket, size_t p_max_threads)
+void oneProcess(ICommunication *p_com, int p_socket, size_t p_max_threads)
 {
     threadpool::ThreadPool<std::pair<std::string, plazza::Information>, std::string> l_threadp(p_max_threads);
     timer::Timer l_timer(5000);
-
-    (void)p_socket; // TODO: remove
 
     l_timer.start();
     l_threadp.run(oneThread);
     while (!l_timer.reached())
     {
         std::string w_result;
-        m_com->answerAskSizeQueue(); // TODO: code it
-        m_com->answerAskOrder(); // TODO: code it -> return pair for execute order
+        p_com->answerAskSizeQueue(); // TODO: code it
+        p_com->answerAskOrder(); // TODO: code it -> return pair for execute order
 
         // TODO: push a pair<string, enum> to l_threadp.pushAction()
 
@@ -69,7 +68,7 @@ void oneProcess(int p_socket, size_t p_max_threads)
 
         if (l_threadp.tryPop(&w_result))
         {
-          m_com->send(p_socket, w_result);
+            p_com->send(p_socket, w_result);
             // TODO: send results to p_socket
         }
     }
@@ -111,15 +110,16 @@ void plazza::ProcessManager::process(std::vector<std::pair<std::string, plazza::
         int w_socket { load_balancer(w_child_qs, p_max_threads) };
         if (w_socket > 0)
         {
-            // TODO: GET ORDER
-            m_com->send(w_socket, nullptr);
+            std::string w_order { orders.back().first + ";" + std::to_string(orders.back().second) };
+            m_com->send(w_socket, w_order);
+            orders.pop_back();
         }
         else
         {
             int w_new_socket {-1};
-           w_new_socket = m_com->addPair().second;
+            w_new_socket = m_com->addPair().second;
 
-            m_forker.create_child(oneProcess, w_new_socket, p_max_threads);
+            m_forker.create_child(oneProcess, m_com, w_new_socket, p_max_threads);
         }
     }
 }

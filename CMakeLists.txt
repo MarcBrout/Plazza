@@ -17,6 +17,8 @@ include_directories(
         ./thread_pool/include
         ./core/include
         ./file_scrapper/include
+        ./communication/socket_internet/include
+        ./logger/include
 )
 
 set(CORE

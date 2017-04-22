@@ -24,7 +24,7 @@ namespace plazza
 
     private:
         ICommunication              *m_com;
-        plazza::Forker<int, size_t>   m_forker;
+        plazza::Forker<ICommunication *, int, size_t>   m_forker;
 
         int load_balancer(std::vector<std::pair<int, size_t >> const& p_sockets,
                           size_t p_max_threads);
@@ -34,6 +34,8 @@ namespace plazza
         ProcessManager(ProcessManager &&) = delete;
         ProcessManager &operator=(ProcessManager const&) = delete;
         ProcessManager &operator=(ProcessManager &&) = delete;
+
+
     };
 }
 
