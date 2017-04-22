@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <Splitter.hpp>
 #include "FileScrapper.hpp"
 #include "Timer.hpp"
 #include "ThreadPool.hpp"
@@ -48,6 +49,21 @@ void oneThread(threadpool::ThreadPool<std::pair<std::string, plazza::Information
     }
 }
 
+std::pair<std::string, plazza::Information> parseOrder(std::string const& p_order)
+{
+    Splitter l_splitter;
+    std::pair<std::string, plazza::Information> l_output;
+    std::vector<std::string> l_tokens;
+
+    l_splitter.split(p_order, ";");
+    l_splitter.moveTokensTo(l_tokens);
+
+    l_output.first = std::move(l_tokens[0]);
+    l_output.second = static_cast<plazza::Information>(std::stoi(l_tokens[1]));
+
+    return (l_output);
+};
+
 void oneProcess(ICommunication *p_com, int p_socket, size_t p_max_threads)
 {
     threadpool::ThreadPool<std::pair<std::string, plazza::Information>, std::string> l_threadp(p_max_threads);
@@ -58,10 +74,11 @@ void oneProcess(ICommunication *p_com, int p_socket, size_t p_max_threads)
     while (!l_timer.reached())
     {
         std::string w_result;
-        p_com->answerAskSizeQueue(); // TODO: code it
-        p_com->answerAskOrder(); // TODO: code it -> return pair for execute order
+        std::string w_rawOrder;
 
-        // TODO: push a pair<string, enum> to l_threadp.pushAction()
+        p_com->answerAskSizeQueue(); // TODO: code it
+        w_rawOrder = p_com->answerAskOrder(); // TODO: code it -> return pair for execute order
+        l_threadp.pushAction(parseOrder(w_rawOrder));
 
         if (l_threadp.orderSize())
             l_timer.reset();
@@ -69,7 +86,6 @@ void oneProcess(ICommunication *p_com, int p_socket, size_t p_max_threads)
         if (l_threadp.tryPop(&w_result))
         {
             p_com->send(p_socket, w_result);
-            // TODO: send results to p_socket
         }
     }
     l_threadp.setOver(true);
