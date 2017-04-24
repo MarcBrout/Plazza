@@ -64,7 +64,7 @@ std::pair<std::string, plazza::Information> parseOrder(std::string const& p_orde
     return (l_output);
 };
 
-void oneProcess(ICommunication *p_com, int p_socket, size_t p_max_threads)
+void oneProcess(plazza::com::ICommunication *p_com, int p_socket, size_t p_max_threads)
 {
     threadpool::ThreadPool<std::pair<std::string, plazza::Information>, std::string> l_threadp(p_max_threads);
     timer::Timer l_timer(5000);
@@ -91,7 +91,7 @@ void oneProcess(ICommunication *p_com, int p_socket, size_t p_max_threads)
     l_threadp.setOver(true);
 }
 
-plazza::ProcessManager::ProcessManager(ICommunication *p_com) :
+plazza::ProcessManager::ProcessManager(plazza::com::ICommunication *p_com) :
         m_com(p_com)
 {
 

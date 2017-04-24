@@ -2,9 +2,11 @@ CXX=            g++
 
 DEBUG=          no
 
+NAME=		tmp
+
 CXXFLAGS=       -W -Wall -Wextra -Wpointer-arith -std=c++14 #-Weffc++
 
-LDFLAGS=	""
+LDFLAGS=
 
 RM=             rm -f
 
