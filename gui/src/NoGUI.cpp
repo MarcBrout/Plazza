@@ -74,5 +74,6 @@ int plazza::NoGUI::run(size_t p_thread_max)
     l_results.clear();
     usleep(5000);
   }
+  std::cout << "Quit biatch !" << std::endl;
   return (0);
 }
