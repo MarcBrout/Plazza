@@ -2,10 +2,10 @@ PROJECT_DIR=    ./cipher_manager/			\
 		./command_generator			\
 		./communication/socket_internet/	\
 		./gui/					\
-		./core/					\
 		./logger/ 				\
 		./file_scrapper/ 			\
-		./ast/
+		./ast/					\
+		./core/
 
 all:
 	@$(foreach c, $(PROJECT_DIR), $(MAKE) -s -C $(c) && ) true

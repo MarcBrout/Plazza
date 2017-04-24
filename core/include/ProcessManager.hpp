@@ -15,7 +15,7 @@ namespace plazza
     class ProcessManager
     {
     public:
-        ProcessManager(ICommunication *p_com);
+        ProcessManager(com::ICommunication *p_com);
         ~ProcessManager() {};
 
         void process(std::vector<std::pair<std::string, plazza::Information>> &orders,
@@ -23,8 +23,8 @@ namespace plazza
         void getResults(std::vector<std::string> &results);
 
     private:
-        ICommunication              *m_com;
-        plazza::Forker<ICommunication *, int, size_t>   m_forker;
+        com::ICommunication              *m_com;
+        plazza::Forker<com::ICommunication *, int, size_t>   m_forker;
 
         int load_balancer(std::vector<std::pair<int, size_t >> const& p_sockets,
                           size_t p_max_threads);
