@@ -108,7 +108,7 @@ namespace plazza
             check = buffer;
           }
       }
-
+      //std::cout << "[Child] raw: " << check << std::endl;
       if (check == "size")
       {
         std::stringstream stream;
