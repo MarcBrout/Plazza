@@ -5,10 +5,16 @@
 #include <exception>
 #include <cstdlib>
 #include <iostream>
+#include <sys/stat.h>
 #include "Core.hpp"
 
 int main(int ac, char **av, char **env)
 {
+    struct stat st = {0};
+
+    if (stat("./files", &st) == -1) {
+        mkdir("./files", 0700);
+    }
     try
     {
         plazza::Core    l_core;
