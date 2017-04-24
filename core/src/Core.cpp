@@ -6,9 +6,15 @@
 
 void plazza::Core::initialize(int ac, char **av, char **env)
 {
+    int l_args;
+    std::string l_av1 { av[1] };
+
     (void)ac;
-    (void)av;
     (void)env;
+
+    if ((l_args = std::stoi(l_av1)) <= 0)
+        throw std::invalid_argument("Threads count must be positive");
+    m_max_threads = static_cast<size_t >(l_args);
 }
 
 int plazza::Core::run()
@@ -20,7 +26,6 @@ int plazza::Core::run()
 }
 
 plazza::Core::Core() :
-    m_max_threads(5)
+    m_max_threads(0)
 {
-
 }

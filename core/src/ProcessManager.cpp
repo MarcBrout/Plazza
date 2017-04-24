@@ -41,6 +41,7 @@ void oneThread(threadpool::ThreadPool<std::pair<std::string, plazza::Information
                     for (std::string &r_str : w_results)
                     {
                         fs << r_str << "\n";
+                        plazza::Logger::getInstance().log(plazza::Logger::INFO, "Found : " + r_str);
                         p_data.s_resultQ.push(std::move(r_str));
                     }
                     fs.close();
@@ -145,8 +146,8 @@ void plazza::ProcessManager::process(std::vector<std::pair<std::string, plazza::
           m_forker.create_child(oneProcess, m_com, socketPair, p_max_threads);
           close(socketPair.second);
           std::string w_order { orders.back().first + ";" + std::to_string(orders.back().second) };
+            plazza::Logger::getInstance().log(plazza::Logger::INFO, "!SEND Order to newly created child!");
           m_com->send(socketPair.first, w_order);
-          plazza::Logger::getInstance().log(plazza::Logger::INFO, "!SEND Order to newly created child!");
           orders.pop_back();
         }
     }
