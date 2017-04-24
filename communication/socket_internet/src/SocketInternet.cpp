@@ -77,8 +77,8 @@ namespace plazza
       int len;
       char buffer[1024] = {0};
       struct timeval timeout;
-      timeout.tv_sec = 1;
-      timeout.tv_usec = 0;
+      timeout.tv_sec = 0;
+      timeout.tv_usec = 10000;
       std::string check;
       fd_set readfds;
       FD_ZERO(&readfds);
@@ -134,8 +134,8 @@ namespace plazza
       fd_set readfds;
       char buffer[1024];
       struct timeval timeout;
-      timeout.tv_sec = 1;
-      timeout.tv_usec = 0;
+      timeout.tv_sec = 0;
+      timeout.tv_usec = 10000;
 
       FD_ZERO(&readfds);
       for (unsigned int i = 0; i < m_fds.size(); i++)
@@ -173,6 +173,7 @@ namespace plazza
             {
               std::cerr << "client disconnected" << std::endl;
               close(sd);
+              m_fds.erase(m_fds.begin() + i);
               //CLOSE FROM VECTOR -> REMOVE PAIR
             }
             else
