@@ -83,17 +83,23 @@ namespace plazza
       return (0);
     }
 
-    int SocketInternet::answerAskOrder()
+    int SocketInternet::answerAskOrder(int socket, std::string &res)
     {
+      char buffer[1024] = {0};
+      read(socket, buffer, 1023);
+      res = buffer;
       return (0);
     }
 
-    int SocketInternet::getActivity()
+    int SocketInternet::getActivity(std::vector<std::string> &results)
     {
       int activity, valread , sd;
       int max_sd = 0;
       fd_set readfds;
       char buffer[1024];
+      struct timeval timeout;
+      timeout.tv_sec = 0;
+      timeout.tv_usec = 50000;
 
       FD_ZERO(&readfds);
       for (unsigned int i = 0; i < m_fds.size(); i++)
@@ -105,10 +111,11 @@ namespace plazza
           max_sd = sd;
       }
 
-      do
+      /*do
       {
         activity = select(max_sd + 1, &readfds, NULL, NULL, NULL);
-      } while (activity == -1 && errno == EINTR);
+      } while (activity == -1 && errno == EINTR);*/
+      activity = select(max_sd + 1, &readfds, NULL, NULL, &timeout);
       if (activity < 0)
       {
         perror("Select");
@@ -116,7 +123,7 @@ namespace plazza
       }
       else if (!activity)
       {
-        std::cerr << "Timed out" << std::endl;
+        //std::cerr << "Timed out" << std::endl;
         //TODO: log.error();
       }
       else
@@ -135,6 +142,7 @@ namespace plazza
             else
             {
               buffer[valread] = '\0';
+              results.push_back(std::move(std::string(buffer)));
             }
           }
         }

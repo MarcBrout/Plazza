@@ -6,9 +6,12 @@
 #include <cstdlib>
 #include <iostream>
 #include "Core.hpp"
+#include "Logger.hpp"
 
 int main(int ac, char **av, char **env)
 {
+  plazza::Logger::getInstance().enableStdout();
+  plazza::Logger::getInstance().log(plazza::Logger::INFO, "start\n");
     try
     {
         plazza::Core    l_core;

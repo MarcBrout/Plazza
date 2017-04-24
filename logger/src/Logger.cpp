@@ -39,14 +39,14 @@ namespace plazza
 
   void Logger::log_stdout(std::string const &msg)
   {
-    std::cout << msg << std::endl;
+    std::cout << "[log]" << msg << std::endl;
   }
 
   void Logger::log_file(std::string const &msg)
   {
     for (std::size_t i = 0; i < m_logFiles.size(); i++)
     {
-      m_logFiles[i] << msg << "\n";
+      m_logFiles[i] << "[log]" << msg << "\n";
     }
   }
 }

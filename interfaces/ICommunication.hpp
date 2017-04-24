@@ -14,12 +14,12 @@ namespace plazza
         virtual ~ICommunication(){};
         virtual int send(int socket, std::string const &msg) = 0;
         virtual int receive(int socket, std::string &msg) = 0;
-        virtual int getActivity() = 0;
+        virtual int getActivity(std::vector<std::string> &) = 0;
         virtual std::pair<int, int> &addPair() = 0;
         virtual int sendAll(std::string const &msg) = 0;
         virtual int getAllSizeQueue(std::vector<std::pair<int, std::size_t> > &) = 0;
         virtual int answerAskSizeQueue(int socket, std::size_t) = 0; // if parent ask for size queue -> answer him
-        virtual int answerAskOrder() = 0; // if order receive, execute it
+        virtual int answerAskOrder(int socket, std::string &) = 0; // if order receive, execute it
     };
   }
 }

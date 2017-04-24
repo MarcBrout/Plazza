@@ -5,6 +5,7 @@
 #include <iostream>
 #include <Splitter.hpp>
 #include "FileScrapper.hpp"
+#include "Logger.hpp"
 #include "Timer.hpp"
 #include "ThreadPool.hpp"
 #include "ProcessManager.hpp"
@@ -77,7 +78,9 @@ void oneProcess(plazza::com::ICommunication *p_com, int p_socket, size_t p_max_t
         std::string w_rawOrder;
 
         p_com->answerAskSizeQueue(p_socket, l_threadp.orderSize());
-        w_rawOrder = p_com->answerAskOrder();
+        p_com->answerAskOrder(p_socket, w_rawOrder);
+        plazza::Logger::getInstance().log(plazza::Logger::INFO, "!READORDER && rawOrder!");
+        plazza::Logger::getInstance().log(plazza::Logger::INFO, w_rawOrder);
         l_threadp.pushAction(parseOrder(w_rawOrder));
 
         if (l_threadp.orderSize())
@@ -128,6 +131,7 @@ void plazza::ProcessManager::process(std::vector<std::pair<std::string, plazza::
         {
             std::string w_order { orders.back().first + ";" + std::to_string(orders.back().second) };
             m_com->send(w_socket, w_order);
+            plazza::Logger::getInstance().log(plazza::Logger::INFO, "!SEND Order!");
             orders.pop_back();
         }
         else
@@ -136,6 +140,10 @@ void plazza::ProcessManager::process(std::vector<std::pair<std::string, plazza::
             w_new_socket = m_com->addPair().second;
 
             m_forker.create_child(oneProcess, m_com, w_new_socket, p_max_threads);
+            std::string w_order { orders.back().first + ";" + std::to_string(orders.back().second) };
+            m_com->send(w_new_socket, w_order);
+            plazza::Logger::getInstance().log(plazza::Logger::INFO, "!SEND Order!");
+            orders.pop_back();
         }
     }
 }
@@ -143,5 +151,5 @@ void plazza::ProcessManager::process(std::vector<std::pair<std::string, plazza::
 void plazza::ProcessManager::getResults(std::vector<std::string> &results)
 {
     // TODO get results from sockets
-    m_com->getActivity(); // TODO: push string into resutl
+    m_com->getActivity(results); // TODO: push string into resutl
 }

@@ -12,8 +12,7 @@ namespace plazza
     public:
       enum LogLevel
       {
-        DEBUG = 0,
-        INFO,
+        INFO = 0,
         ERROR
       };
 
@@ -25,7 +24,7 @@ namespace plazza
       }
 
     public:
-      Logger():m_level(DEBUG), m_isStdout(false){}
+      Logger():m_level(INFO), m_isStdout(false){}
       ~Logger();
       Logger(Logger const&) = delete;
       void operator=(Logger  const&)  = delete;

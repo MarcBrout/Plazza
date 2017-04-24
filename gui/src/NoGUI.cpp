@@ -60,7 +60,6 @@ int plazza::NoGUI::run(size_t p_thread_max)
       }
       else
       {
-        Logger::getInstance().enableStdout();
         Logger::getInstance().log(Logger::INFO, l_line);
         l_parser.feedCommand(l_line);
         l_graph_reader.readGraph(l_parser.getGraph());
@@ -73,6 +72,7 @@ int plazza::NoGUI::run(size_t p_thread_max)
     {
       std::cout << r_result << std::endl;
     }
+    l_results.clear();
     usleep(5000);
   }
   return (0);
