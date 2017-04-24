@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <sys/stat.h>
 #include "CoreGui.hpp"
 
 int main(int ac, char **av, char **env)
