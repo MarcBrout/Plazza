@@ -13,7 +13,7 @@ clean:
 
 fclean: clean
 	        @$(RM) $(NAME)
-		        @echo -e '\E[30;33m'"\033[1m[OK] Deleting binary: $(BASE_NAME)\033[0m"
+		        @echo -e  '\E[30;33m'"\033[1m[OK] Deleting binary: $(BASE_NAME)\033[0m"
 
 re: fclean all
 
