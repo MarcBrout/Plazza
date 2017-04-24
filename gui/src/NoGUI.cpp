@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <mutex>
-#include <zconf.h>
 #include "AstParse.hpp"
 #include "GraphReader.hpp"
 #include "ProcessManager.hpp"

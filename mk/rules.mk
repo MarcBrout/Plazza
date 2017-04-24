@@ -9,7 +9,7 @@ ifeq ($(NAME), plazza)
 
 all:    $(OBJ)
 	@echo "Linking"
-	g++ -o ./../$(NAME) /vagrant/cpp_plazza/obj/*.o $(LDFLAGS) $(LOCAL_LDFLAGS)
+	g++ -o ./../$(NAME) ./../obj/*.o $(LDFLAGS) $(LOCAL_LDFLAGS)
 
 endif
 
