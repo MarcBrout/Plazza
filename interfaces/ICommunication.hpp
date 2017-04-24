@@ -2,6 +2,7 @@
 # define ICOMMUNICATION_HPP_
 
 #include <string>
+#include <vector>
 
 class ICommunication
 {

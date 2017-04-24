@@ -138,9 +138,8 @@ namespace plazza
             }
           }
         }
-        return (0);
       }
-
+      return (0);
     }
   }
 }
