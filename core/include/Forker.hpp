@@ -19,12 +19,12 @@ namespace plazza
             pid_t l_pid;
 
             l_pid = fork();
-            if (!l_pid)
+            if (l_pid)
                 return (true);
             else if (l_pid < 0)
                 return (false);
             fn(args...);
-            std::exit(EXIT_SUCCESS);
+            _exit(13);
         };
 
         bool operator()(std::function<void(Args...)> fn, Args... args)
