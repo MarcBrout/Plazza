@@ -3,25 +3,31 @@
 //
 
 #include <iostream>
+#include <sys/stat.h>
 #include "CoreGui.hpp"
 
 int main(int ac, char **av, char **env)
 {
-    try
+  struct stat st;
+
+  if (stat("./files", &st) == -1) {
+    mkdir("./files", 0700);
+  }
+  try
     {
-        plazza::CoreGui l_coreGui;
-        l_coreGui.initialize(ac, av, env);
-        l_coreGui.run();
-        return (EXIT_SUCCESS);
+      plazza::CoreGui l_coreGui;
+      l_coreGui.initialize(ac, av, env);
+      l_coreGui.run();
+      return (EXIT_SUCCESS);
     }
-    catch (std::exception &err)
+  catch (std::exception &err)
     {
-        if (err.what())
-            std::cerr << err.what() << std::endl;
-        return (EXIT_FAILURE);
+      if (err.what())
+	std::cerr << err.what() << std::endl;
+      return (EXIT_FAILURE);
     }
-    catch (...)
+  catch (...)
     {
-        return (EXIT_FAILURE);
+      return (EXIT_FAILURE);
     }
 }

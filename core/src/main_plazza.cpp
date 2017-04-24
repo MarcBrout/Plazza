@@ -5,19 +5,25 @@
 #include <exception>
 #include <cstdlib>
 #include <iostream>
+#include <sys/stat.h>
 #include "Core.hpp"
 #include "Logger.hpp"
 
 int main(int ac, char **av, char **env)
 {
-  plazza::Logger::getInstance().enableStdout();
-  plazza::Logger::getInstance().log(plazza::Logger::INFO, "start\n");
+    struct stat st;
+
     if (ac != 2)
     {
         std::cerr << av[0] << ": [NB_THREADS]" << std::endl;
         return (EXIT_FAILURE);
     }
 
+    if (stat("./files", &st) == -1) {
+        mkdir("./files", 0700);
+    }
+  plazza::Logger::getInstance().enableStdout();
+  plazza::Logger::getInstance().log(plazza::Logger::INFO, "start\n");
     try
     {
         plazza::Core    l_core;
