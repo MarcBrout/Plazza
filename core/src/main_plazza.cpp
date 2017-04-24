@@ -13,6 +13,12 @@ int main(int ac, char **av, char **env)
 {
     struct stat st;
 
+    if (ac != 2)
+    {
+        std::cerr << av[0] << ": [NB_THREADS]" << std::endl;
+        return (EXIT_FAILURE);
+    }
+
     if (stat("./files", &st) == -1) {
         mkdir("./files", 0700);
     }
