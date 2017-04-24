@@ -9,6 +9,8 @@
 #include "GraphReader.hpp"
 #include "ProcessManager.hpp"
 #include "NoGUI.hpp"
+#include "SocketInternet.hpp"
+#include "Logger.hpp"
 
 void read_cin(threadpool::ThreadPool<bool, std::string>::Data &p_data)
 {
@@ -40,7 +42,7 @@ plazza::NoGUI::NoGUI()
 int plazza::NoGUI::run(size_t p_thread_max)
 {
   std::string l_line;
-  SocketInternet sock();
+  plazza::com::SocketInternet sock;
   plazza::AstParse    l_parser;
   plazza::GraphReader l_graph_reader;
   plazza::ProcessManager  l_process_manager(&sock);
