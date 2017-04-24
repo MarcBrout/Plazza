@@ -11,7 +11,7 @@
 
 int main(int ac, char **av, char **env)
 {
-    struct stat st = {0};
+    struct stat st;
 
     if (stat("./files", &st) == -1) {
         mkdir("./files", 0700);
