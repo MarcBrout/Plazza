@@ -20,20 +20,21 @@ $(OBJ_DIR)%.o:	$(SRC_DIR)%.cpp
 ifeq ($(NAME), tmp)
 clean:
 	        @$(RM) $(OBJ)
-		        @echo -e '\E[30;33m'"\033[1m[OK] Deleting objs\033[0m"
+		        @echo -e '\033[30;33m'"\033[1m[OK] Deleting objs\033[0m"
 
 fclean: clean
-	@echo -e '\E[30;33m'"\033[1m[OK] No binary to delete\033[0m"
+	        @$(RM) $(NAME)
+		        @echo -e  '\033[30;33m'"\033[1m[OK] Deleting binary: $(BASE_NAME)\033[0m"
 endif
 
 ifeq ($(NAME), plazza)
 clean:
 	        @$(RM) $(OBJ)
-		        @echo -e '\E[30;33m'"\033[1m[OK] Deleting objs\033[0m"
+		        @echo -e '\033[30;33m'"\033[1m[OK] Deleting objs\033[0m"
 
 fclean: clean
 	        @$(RM) ./../$(NAME)
-		        @echo -e '\E[30;33m'"\033[1m[OK] Deleting binary: $(NAME)\033[0m"
+		        @echo -e '\033[30;33m'"\033[1m[OK] Deleting binary: $(NAME)\033[0m"
 endif
 re: fclean all
 
