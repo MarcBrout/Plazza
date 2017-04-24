@@ -2,6 +2,7 @@
 // Created by brout_m on 18/04/17.
 //
 
+#include <unistd.h>
 #include "Core.hpp"
 
 void plazza::Core::initialize(int ac, char **av, char **env)

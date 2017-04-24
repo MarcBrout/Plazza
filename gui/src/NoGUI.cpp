@@ -15,11 +15,12 @@ void read_cin(threadpool::ThreadPool<bool, std::string>::Data &p_data)
 {
   while (!p_data.s_over)
   {
+
     std::string l_line;
 
     std::getline(std::cin, l_line);
 
-    if (std::cin.eof())
+      if (std::cin.eof())
     {
       p_data.s_resultQ.push("");
       break;
