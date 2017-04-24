@@ -24,7 +24,7 @@ namespace plazza
 
     private:
         com::ICommunication              *m_com;
-        plazza::Forker<com::ICommunication *, int, size_t>   m_forker;
+        plazza::Forker<com::ICommunication *, std::pair<int, int>, size_t>   m_forker;
 
         int load_balancer(std::vector<std::pair<int, size_t >> const& p_sockets,
                           size_t p_max_threads);
