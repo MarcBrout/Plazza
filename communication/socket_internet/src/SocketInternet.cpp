@@ -97,30 +97,30 @@ namespace plazza
       }
       else
       {
-          if (FD_ISSET(sock, &readfds)) 
+        if (FD_ISSET(sock, &readfds)) 
+        {
+          if ((len = read(sock, buffer, 1023)) == 0)
           {
-            if ((len = read(sock, buffer, 1023)) == 0)
-            {
-              close(sock);
-              return (1);
-            }
-            buffer[len] = 0;
-            check = buffer;
-            if (check == "size")
-            {
-              std::stringstream stream;
-              stream << size;
-              plazza::Logger::getInstance().log(plazza::Logger::INFO, "[Child] Master asked for size");
-              send(sock, stream.str());
-              return (0);
-            }
-            else if (std::strlen(buffer))
-            {
-              plazza::Logger::getInstance().log(plazza::Logger::INFO, "[Child] Master gave order");
-              res = buffer;
-              return (1);
-            }
+            close(sock);
+            return (1);
           }
+          buffer[len] = 0;
+          check = buffer;
+          if (check == "size")
+          {
+            std::stringstream stream;
+            stream << size;
+            plazza::Logger::getInstance().log(plazza::Logger::INFO, "[Child] Master asked for size");
+            send(sock, stream.str());
+            return (0);
+          }
+          else if (std::strlen(buffer))
+          {
+            plazza::Logger::getInstance().log(plazza::Logger::INFO, "[Child] Master gave order");
+            res = buffer;
+            return (1);
+          }
+        }
       }
       return (-1);
     }
