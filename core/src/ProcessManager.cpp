@@ -26,7 +26,7 @@ void oneThread(threadpool::ThreadPool<std::pair<std::string, plazza::Information
 
     while (!p_data.s_over)
     {
-        if (p_data.s_orderQ.pop(&l_order))
+        if (p_data.s_orderQ.tryPop(&l_order))
         {
             try
             {
