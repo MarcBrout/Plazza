@@ -123,7 +123,7 @@ namespace plazza
         res = buffer;
         return (1);
       }
-      plazza::Logger::getInstance().log(plazza::Logger::INFO, "[Child] RECV DE LA MERDE");
+      //plazza::Logger::getInstance().log(plazza::Logger::INFO, "[Child] RECV DE LA MERDE");
       return (-1);
     }
 
@@ -135,7 +135,7 @@ namespace plazza
       char buffer[1024];
       struct timeval timeout;
       timeout.tv_sec = 0;
-      timeout.tv_usec = 10000;
+      timeout.tv_usec = 1;
 
       FD_ZERO(&readfds);
       for (unsigned int i = 0; i < m_fds.size(); i++)
