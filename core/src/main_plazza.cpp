@@ -12,6 +12,12 @@ int main(int ac, char **av, char **env)
 {
   plazza::Logger::getInstance().enableStdout();
   plazza::Logger::getInstance().log(plazza::Logger::INFO, "start\n");
+    if (ac != 2)
+    {
+        std::cerr << av[0] << ": [NB_THREADS]" << std::endl;
+        return (EXIT_FAILURE);
+    }
+
     try
     {
         plazza::Core    l_core;

@@ -2,14 +2,14 @@ OBJ=		$(SRC:$(SRC_DIR)%.cpp=$(OBJ_DIR)%.o)
 
 ifeq ($(NAME), tmp)
 all:    $(OBJ)
-	
+
 endif
 
 ifeq ($(NAME), plazza)
 
 all:    $(OBJ)
 	@echo "Linking"
-	g++ -o ./../$(NAME) /vagrant/cpp_plazza/obj/*.o $(LDFLAGS) $(LOCAL_LDFLAGS)
+	g++ -o ./../$(NAME) ./../obj/*.o $(LDFLAGS) $(LOCAL_LDFLAGS)
 
 endif
 
