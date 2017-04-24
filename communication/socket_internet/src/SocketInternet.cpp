@@ -34,7 +34,7 @@ namespace plazza
     {
       for (unsigned int i = 0; i < m_fds.size(); i++)
       {
-        std::cout << "SENDALL:'" << msg << "' TO SOCKET: " << socket << std::endl;
+        std::cout << "SENDALL:'" << msg << "' TO SOCKET: " << m_fds[i].first << std::endl;
         if (write(m_fds[i].first, msg.c_str(), msg.length()) != static_cast<ssize_t>(msg.length()))
         {
           return (1);
