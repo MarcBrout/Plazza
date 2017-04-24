@@ -91,7 +91,7 @@ void oneProcess(plazza::com::ICommunication *p_com, std::pair<int, int>socketPai
         if (l_threadp.orderSize())
             l_timer.reset();
 
-        if (l_threadp.tryPop(&w_result))
+        while (l_threadp.tryPop(&w_result))
         {
             p_com->send(socketPair.second, w_result);
         }
