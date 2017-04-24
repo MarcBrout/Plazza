@@ -109,7 +109,7 @@ namespace plazza
           }
       }
 
-        std::cout << "[Child] Master order : " << check << std::endl;
+//        std::cout << "[Child] Master order : " << check << std::endl;
       if (check == "size")
       {
         std::stringstream stream;
