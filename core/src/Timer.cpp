@@ -3,6 +3,7 @@
 //
 
 #include <chrono>
+#include <iostream>
 #include "Timer.hpp"
 
 timer::Timer::Timer(int p_duree) :
@@ -14,9 +15,7 @@ timer::Timer::Timer(int p_duree) :
 
 bool timer::Timer::reached() const
 {
-    return (m_started && m_starting_point -
-            std::chrono::system_clock::now() >
-            m_duree);
+  return (m_started && std::chrono::system_clock::now() - m_starting_point > m_duree);
 }
 
 void timer::Timer::reset()
