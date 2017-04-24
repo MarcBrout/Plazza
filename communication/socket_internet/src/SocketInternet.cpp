@@ -106,24 +106,22 @@ namespace plazza
             }
             buffer[len] = 0;
             check = buffer;
+            if (check == "size")
+            {
+              std::stringstream stream;
+              stream << size;
+              plazza::Logger::getInstance().log(plazza::Logger::INFO, "[Child] Master asked for size");
+              send(sock, stream.str());
+              return (0);
+            }
+            else if (std::strlen(buffer))
+            {
+              plazza::Logger::getInstance().log(plazza::Logger::INFO, "[Child] Master gave order");
+              res = buffer;
+              return (1);
+            }
           }
       }
-      //std::cout << "[Child] raw: " << check << std::endl;
-      if (check == "size")
-      {
-        std::stringstream stream;
-        stream << size;
-        plazza::Logger::getInstance().log(plazza::Logger::INFO, "[Child] Master asked for size");
-        send(sock, stream.str());
-        return (0);
-      }
-      else if (std::strlen(buffer))
-      {
-        plazza::Logger::getInstance().log(plazza::Logger::INFO, "[Child] Master gave order");
-        res = buffer;
-        return (1);
-      }
-      //plazza::Logger::getInstance().log(plazza::Logger::INFO, "[Child] RECV DE LA MERDE");
       return (-1);
     }
 
