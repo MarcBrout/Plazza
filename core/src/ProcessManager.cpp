@@ -5,6 +5,7 @@
 #include <iostream>
 #include <Splitter.hpp>
 #include "FileScrapper.hpp"
+#include "Logger.hpp"
 #include "Timer.hpp"
 #include "ThreadPool.hpp"
 #include "ProcessManager.hpp"
@@ -68,11 +69,12 @@ std::pair<std::string, plazza::Information> parseOrder(std::string const& p_orde
     return (l_output);
 };
 
-void oneProcess(plazza::com::ICommunication *p_com, int p_socket, size_t p_max_threads)
+void oneProcess(plazza::com::ICommunication *p_com, std::pair<int, int>socketPair, size_t p_max_threads)
 {
     threadpool::ThreadPool<std::pair<std::string, plazza::Information>, std::string> l_threadp(p_max_threads);
     timer::Timer l_timer(5000);
 
+    close(socketPair.first);
     l_timer.start();
     l_threadp.run(oneThread);
     while (!l_timer.reached())
@@ -80,16 +82,17 @@ void oneProcess(plazza::com::ICommunication *p_com, int p_socket, size_t p_max_t
         std::string w_result;
         std::string w_rawOrder;
 
-        p_com->answerAskSizeQueue(p_socket, l_threadp.orderSize());
-        w_rawOrder = p_com->answerAskOrder();
-        l_threadp.pushAction(parseOrder(w_rawOrder));
+        if (p_com->readFromMaster(socketPair.second, l_threadp.orderSize(), w_rawOrder) == 1)
+        {
+          l_threadp.pushAction(parseOrder(w_rawOrder));
+        }
 
         if (l_threadp.orderSize())
             l_timer.reset();
 
         if (l_threadp.tryPop(&w_result))
         {
-            p_com->send(p_socket, w_result);
+            p_com->send(socketPair.second, w_result);
         }
     }
     l_threadp.setOver(true);
@@ -132,20 +135,25 @@ void plazza::ProcessManager::process(std::vector<std::pair<std::string, plazza::
         {
             std::string w_order { orders.back().first + ";" + std::to_string(orders.back().second) };
             m_com->send(w_socket, w_order);
+            plazza::Logger::getInstance().log(plazza::Logger::INFO, "!SEND Order!");
             orders.pop_back();
         }
         else
         {
-            int w_new_socket {-1};
-            w_new_socket = m_com->addPair().second;
+          std::pair<int, int> socketPair(m_com->addPair());
 
-            m_forker.create_child(oneProcess, m_com, w_new_socket, p_max_threads);
+          m_forker.create_child(oneProcess, m_com, socketPair, p_max_threads);
+          close(socketPair.second);
+          std::string w_order { orders.back().first + ";" + std::to_string(orders.back().second) };
+          m_com->send(socketPair.first, w_order);
+          plazza::Logger::getInstance().log(plazza::Logger::INFO, "!SEND Order to newly created child!");
+          orders.pop_back();
         }
     }
 }
 
 void plazza::ProcessManager::getResults(std::vector<std::string> &results)
 {
-    // TODO get results from sockets
-    m_com->getActivity(); // TODO: push string into resutl
+  // TODO get results from sockets
+  m_com->getActivity(results); // TODO: push string into resutl
 }

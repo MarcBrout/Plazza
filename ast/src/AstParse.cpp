@@ -68,7 +68,7 @@ void plazza::AstParse::checkError()
     size_t count(0);
     for (std::string file : m_file)
     {
-        if (std::find(g_order.begin(), g_order.end(), m_file.back()) != g_order.end())
+        if (std::find(g_order.begin(), g_order.end(), file) != g_order.end())
             count++;
     }
     if (count > 1)
