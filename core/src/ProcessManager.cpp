@@ -103,7 +103,7 @@ void oneProcess(plazza::com::ICommunication *p_com, std::pair<int, int>socketPai
     }
     l_threadp.setOver(true);
     std::cout << "[PROCESS] DONE BYE" << std::endl;
-    _Exit(EXIT_SUCCESS);
+    _exit(EXIT_SUCCESS);
 }
 
 plazza::ProcessManager::ProcessManager(plazza::com::ICommunication *p_com) :
