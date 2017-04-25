@@ -15,7 +15,8 @@ void oneThread(threadpool::ThreadPool<std::pair<std::string, plazza::Information
 {
     std::pair<std::string, plazza::Information> l_order;
     std::fstream fs;
-    plazza::RegexParser l_reg_ip("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$");
+    plazza::RegexParser l_reg_ip("\\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\"
+                                         ".(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b");
     plazza::RegexParser l_reg_email("[a-zA-Z0-9_.-]+@[a-zA-Z0-9_.-]+");
     plazza::RegexParser l_reg_phone("(?:(?:\\+|00)33|0)\\s*[1-9](?:[\\s.-]*\\d{2}){4}");
 
