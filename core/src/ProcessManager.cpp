@@ -89,14 +89,17 @@ void oneProcess(plazza::com::ICommunication *p_com, std::pair<int, int>socketPai
         }
 
         if (l_threadp.orderSize())
+        {
+          std::cout << "[TIMER] RESET" << std::endl;
             l_timer.reset();
+        }
 
-        while (l_threadp.tryPop(&w_result))
+        if (l_threadp.tryPop(&w_result))
         {
             p_com->send(socketPair.second, w_result);
-            usleep(10000);
         }
     }
+    std::cout << "[PROCESS] DONE BYE" << std::endl;
     l_threadp.setOver(true);
 }
 
@@ -117,9 +120,11 @@ int plazza::ProcessManager::load_balancer(std::vector<std::pair<int, size_t >> c
         if (p_sockets[r_pos].second < l_smallest)
         {
             l_smallest = r_pos;
+            l_pos = l_smallest;
         }
     }
-
+    if (l_pos >= 0)
+        return p_sockets[l_pos].first;
     return l_pos;
 }
 
@@ -133,6 +138,7 @@ void plazza::ProcessManager::process(std::vector<std::pair<std::string, plazza::
         m_com->getAllSizeQueue(w_child_qs);
 
         int w_socket { load_balancer(w_child_qs, p_max_threads) };
+        std::cout << "[LOAD BALANCER] socket :" << w_socket << std::endl;
         if (w_socket > 0)
         {
             std::string w_order { orders.back().first + ";" + std::to_string(orders.back().second) };
@@ -151,6 +157,7 @@ void plazza::ProcessManager::process(std::vector<std::pair<std::string, plazza::
           m_com->send(socketPair.first, w_order);
           orders.pop_back();
         }
+        usleep(10000);
     }
 }
 

@@ -97,33 +97,31 @@ namespace plazza
       }
       else
       {
-          if (FD_ISSET(sock, &readfds)) 
+        if (FD_ISSET(sock, &readfds)) 
+        {
+          if ((len = read(sock, buffer, 1023)) == 0)
           {
-            if ((len = read(sock, buffer, 1023)) == 0)
-            {
-              close(sock);
-              return (1);
-            }
-            buffer[len] = 0;
-            check = buffer;
+            close(sock);
+            return (1);
           }
+          buffer[len] = 0;
+          check = buffer;
+          if (check == "size")
+          {
+            std::stringstream stream;
+            stream << size;
+            plazza::Logger::getInstance().log(plazza::Logger::INFO, "[Child] Master asked for size");
+            send(sock, stream.str());
+            return (0);
+          }
+          else if (std::strlen(buffer))
+          {
+            plazza::Logger::getInstance().log(plazza::Logger::INFO, "[Child] Master gave order");
+            res = buffer;
+            return (1);
+          }
+        }
       }
-
-      if (check == "size")
-      {
-        std::stringstream stream;
-        stream << size;
-        plazza::Logger::getInstance().log(plazza::Logger::INFO, "[Child] Master asked for size");
-        send(sock, stream.str());
-        return (0);
-      }
-      else if (std::strlen(buffer))
-      {
-        plazza::Logger::getInstance().log(plazza::Logger::INFO, "[Child] Master gave order");
-        res = buffer;
-        return (1);
-      }
-      plazza::Logger::getInstance().log(plazza::Logger::INFO, "[Child] RECV DE LA MERDE");
       return (-1);
     }
 
@@ -135,7 +133,7 @@ namespace plazza
       char buffer[1024];
       struct timeval timeout;
       timeout.tv_sec = 0;
-      timeout.tv_usec = 10000;
+      timeout.tv_usec = 1;
 
       FD_ZERO(&readfds);
       for (unsigned int i = 0; i < m_fds.size(); i++)
