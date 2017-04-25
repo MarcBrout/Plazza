@@ -6,6 +6,7 @@
 #include <mutex>
 #include <sys/types.h>
 #include <sys/time.h>
+#include <sys/wait.h>
 #include <unistd.h>
 #include "AstParse.hpp"
 #include "GraphReader.hpp"
@@ -86,6 +87,7 @@ int plazza::NoGUI::run(size_t p_thread_max)
   plazza::com::SocketInternet sock;
   plazza::ProcessManager  l_process_manager(&sock);
   std::vector<std::string> l_results;
+  int bite;
 
   while (!m_over)
   {
@@ -107,6 +109,7 @@ int plazza::NoGUI::run(size_t p_thread_max)
         l_line.clear();
     }
 
+    waitpid(-1, &bite, WNOHANG);
     l_process_manager.getResults(l_results);
     for (std::string &r_result : l_results)
     {
