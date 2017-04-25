@@ -26,6 +26,7 @@ namespace plazza
         ~AstParse() {};
         AGraphAst<plazza::Type, std::string> &getGraph();
         void feedCommand(std::string const& p_command);
+        void clear();
     };
 }
 
