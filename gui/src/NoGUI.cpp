@@ -98,14 +98,14 @@ int plazza::NoGUI::run(size_t p_thread_max)
     }
     else if (l_line.size())
     {
-        std::cout << l_line << std::endl;
         Logger::getInstance().log(Logger::INFO, l_line);
         l_parser.feedCommand(l_line);
         l_line.clear();
+        l_graph_reader.clear();
         l_graph_reader.readGraph(l_parser.getGraph());
+        l_orders.clear();
         l_orders = std::move(l_graph_reader.getReader());
         l_process_manager.process(l_orders, p_thread_max);
-        l_orders.clear();
     }
 
     l_process_manager.getResults(l_results);

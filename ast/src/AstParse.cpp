@@ -22,7 +22,9 @@ void plazza::AstParse::feedCommand(std::string const& p_command)
 
     l_split.split(p_command, ";");
     l_split.moveTokensTo(m_order);
+    l_split.clear();
     feedGraph();
+    m_order.clear();
 }
 
 void plazza::AstParse::feedGraph()
