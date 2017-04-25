@@ -85,6 +85,11 @@ void oneProcess(plazza::com::ICommunication *p_com, std::pair<int, int>socketPai
         std::string w_result;
         std::string w_rawOrder;
 
+        if (l_threadp.tryPop(&w_result))
+        {
+            p_com->send(socketPair.second, w_result);
+        }
+
         if (p_com->readFromMaster(socketPair.second, l_threadp.orderSize(), w_rawOrder) == 1)
         {
           l_threadp.pushAction(parseOrder(w_rawOrder));
@@ -94,11 +99,6 @@ void oneProcess(plazza::com::ICommunication *p_com, std::pair<int, int>socketPai
         {
           std::cout << "[TIMER] RESET" << std::endl;
             l_timer.reset();
-        }
-
-        if (l_threadp.tryPop(&w_result))
-        {
-            p_com->send(socketPair.second, w_result);
         }
     }
     l_threadp.setOver(true);
