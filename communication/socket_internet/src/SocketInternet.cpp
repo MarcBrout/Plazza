@@ -34,7 +34,7 @@ namespace plazza
     {
       for (unsigned int i = 0; i < m_fds.size(); i++)
       {
-        std::cout << "SENDALL:'" << msg << "' TO SOCKET: " << m_fds[i].first << std::endl;
+        //std::cout << "SENDALL:'" << msg << "' TO SOCKET: " << m_fds[i].first << std::endl;
         if (write(m_fds[i].first, msg.c_str(), msg.length()) != static_cast<ssize_t>(msg.length()))
         {
           return (1);
@@ -46,7 +46,7 @@ namespace plazza
     int SocketInternet::send(int socket, std::string const &msg)
     {
       //plazza::Logger::getInstance().log(plazza::Logger::INFO, "SEND TO");
-      std::cout << "SEND:'" << msg << "' TO SOCKET: " << socket << std::endl;
+      //std::cout << "SEND:'" << msg << "' TO SOCKET: " << socket << std::endl;
       size_t size = msg.length();
       if (write(socket, msg.c_str(), size) != static_cast<ssize_t>(size))
         return (1);
@@ -78,7 +78,7 @@ namespace plazza
       char buffer[1024] = {0};
       struct timeval timeout;
       timeout.tv_sec = 0;
-      timeout.tv_usec = 10000;
+      timeout.tv_usec = 1;
       std::string check;
       fd_set readfds;
       FD_ZERO(&readfds);
@@ -169,7 +169,7 @@ namespace plazza
           {
             if ((valread = read(sd, buffer, 1024)) == 0)
             {
-              std::cerr << "client disconnected" << std::endl;
+              //std::cerr << "client disconnected" << std::endl;
               close(sd);
               m_fds.erase(m_fds.begin() + i);
               //CLOSE FROM VECTOR -> REMOVE PAIR
