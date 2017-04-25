@@ -14,7 +14,6 @@
 void oneThread(threadpool::ThreadPool<std::pair<std::string, plazza::Information>, std::string>::data &p_data)
 {
     std::pair<std::string, plazza::Information> l_order;
-    std::fstream fs;
     plazza::RegexParser l_reg_ip("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$");
     plazza::RegexParser l_reg_email("[a-zA-Z0-9_.-]+@[a-zA-Z0-9_.-]+");
     plazza::RegexParser l_reg_phone("(?:(?:\\+|00)33|0)\\s*[1-9](?:[\\s.-]*\\d{2}){4}");
@@ -37,14 +36,12 @@ void oneThread(threadpool::ThreadPool<std::pair<std::string, plazza::Information
                 {
                     w_file_scrapper.scrapFile();
                     w_file_scrapper.moveResultsTo(w_results);
-                    fs.open("./files/" + l_order.first + "_" + std::to_string(static_cast<int>(l_order.second)), std::fstream::out | std::fstream::app);
                     for (std::string &r_str : w_results)
                     {
-                        fs << r_str << "\n";
+                        plazza::Logger::getInstance().logResult(r_str + "\n");
                         plazza::Logger::getInstance().log(plazza::Logger::INFO, "Found : " + r_str);
                         p_data.s_resultQ.push(std::move(r_str));
                     }
-                    fs.close();
                 }
             }
             catch (std::exception &err)

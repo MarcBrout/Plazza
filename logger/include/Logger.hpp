@@ -32,6 +32,7 @@ namespace plazza
       void enableStdout();
       void disableStdout();
       void log(LogLevel, std::string const &msg);
+      void logResult(std::string const &);
 
     private:
       void log_stdout(std::string const &msg);

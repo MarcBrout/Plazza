@@ -34,6 +34,7 @@ int main(int ac, char **av, char **env)
     }
   plazza::Logger::getInstance().enableStdout();
   plazza::Logger::getInstance().log(plazza::Logger::INFO, "start\n");
+    plazza::Logger::getInstance().addFile("./files/result.txt");
     try
     {
         plazza::Core    l_core;

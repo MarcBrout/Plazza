@@ -37,6 +37,12 @@ namespace plazza
       log_file(msg);
   }
 
+    void Logger::logResult(std::string const &msg)
+    {
+      if (m_logFiles.size() > 0)
+        log_file(msg);
+    }
+
   void Logger::log_stdout(std::string const &msg)
   {
     std::cout << "[log]" << msg << std::endl;
@@ -46,7 +52,7 @@ namespace plazza
   {
     for (std::size_t i = 0; i < m_logFiles.size(); i++)
     {
-      m_logFiles[i] << "[log]" << msg << "\n";
+      m_logFiles[i] << msg << "\n";
     }
   }
 }
