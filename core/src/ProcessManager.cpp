@@ -15,6 +15,9 @@ void oneThread(threadpool::ThreadPool<std::pair<std::string, plazza::Information
 {
     std::pair<std::string, plazza::Information> l_order;
     plazza::RegexParser l_reg_ip("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$");
+    std::fstream fs;
+    plazza::RegexParser l_reg_ip("\\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\"
+                                         ".(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b");
     plazza::RegexParser l_reg_email("[a-zA-Z0-9_.-]+@[a-zA-Z0-9_.-]+");
     plazza::RegexParser l_reg_phone("(?:(?:\\+|00)33|0)\\s*[1-9](?:[\\s.-]*\\d{2}){4}");
 
@@ -40,6 +43,7 @@ void oneThread(threadpool::ThreadPool<std::pair<std::string, plazza::Information
                     {
                         plazza::Logger::getInstance().logResult(r_str + "\n");
                         plazza::Logger::getInstance().log(plazza::Logger::INFO, "Found : " + r_str);
+                        std::cout << r_str << std::endl;
                         p_data.s_resultQ.push(std::move(r_str));
                     }
                 }
@@ -50,7 +54,7 @@ void oneThread(threadpool::ThreadPool<std::pair<std::string, plazza::Information
             }
         }
     }
-    std::cout << "[THREAD] OVER" << std::endl;
+    //std::cout << "[THREAD] OVER" << std::endl;
     pthread_exit(NULL);
 }
 
@@ -82,6 +86,11 @@ void oneProcess(plazza::com::ICommunication *p_com, std::pair<int, int>socketPai
         std::string w_result;
         std::string w_rawOrder;
 
+        if (l_threadp.tryPop(&w_result))
+        {
+            p_com->send(socketPair.second, w_result);
+        }
+
         if (p_com->readFromMaster(socketPair.second, l_threadp.orderSize(), w_rawOrder) == 1)
         {
           l_threadp.pushAction(parseOrder(w_rawOrder));
@@ -89,17 +98,12 @@ void oneProcess(plazza::com::ICommunication *p_com, std::pair<int, int>socketPai
 
         if (l_threadp.orderSize())
         {
-          std::cout << "[TIMER] RESET" << std::endl;
+          //std::cout << "[TIMER] RESET" << std::endl;
             l_timer.reset();
-        }
-
-        if (l_threadp.tryPop(&w_result))
-        {
-            p_com->send(socketPair.second, w_result);
         }
     }
     l_threadp.setOver(true);
-    std::cout << "[PROCESS] DONE BYE" << std::endl;
+    //std::cout << "[PROCESS] DONE BYE" << std::endl;
     _exit(EXIT_SUCCESS);
 }
 
@@ -132,7 +136,7 @@ int plazza::ProcessManager::process(std::vector<std::pair<std::string, plazza::I
                                      size_t p_max_threads)
 {
 
-    std::cout << "ORDER SIZE : " << orders.size() << std::endl;
+    //std::cout << "ORDER SIZE : " << orders.size() << std::endl;
 
     while (orders.size())
     {
@@ -141,7 +145,7 @@ int plazza::ProcessManager::process(std::vector<std::pair<std::string, plazza::I
         m_com->getAllSizeQueue(w_child_qs);
 
         int w_socket { load_balancer(w_child_qs, p_max_threads) };
-        std::cout << "[LOAD BALANCER] socket :" << w_socket << std::endl;
+        //std::cout << "[LOAD BALANCER] socket :" << w_socket << std::endl;
         if (w_socket > 0)
         {
             std::string w_order { orders.back().first + ";" + std::to_string(orders.back().second) };
@@ -152,7 +156,7 @@ int plazza::ProcessManager::process(std::vector<std::pair<std::string, plazza::I
         else
         {
           std::pair<int, int> socketPair(m_com->addPair());
-            std::cout << "BEFORE FORK PID: " << getpid() << std::endl;
+            //std::cout << "BEFORE FORK PID: " << getpid() << std::endl;
           if (m_forker.create_child(oneProcess, m_com, socketPair, p_max_threads) == -1)
               return (1);
           close(socketPair.second);
@@ -161,13 +165,12 @@ int plazza::ProcessManager::process(std::vector<std::pair<std::string, plazza::I
           m_com->send(socketPair.first, w_order);
           orders.pop_back();
         }
-        usleep(10000);
+        usleep(50000);
     }
     return (0);
 }
 
 void plazza::ProcessManager::getResults(std::vector<std::string> &results)
 {
-  // TODO get results from sockets
-  m_com->getActivity(results); // TODO: push string into resutl
+  m_com->getActivity(results);
 }
