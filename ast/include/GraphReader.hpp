@@ -23,7 +23,6 @@ namespace plazza
         void readGraph(AGraphAst<plazza::Type, std::string> &);
 
         const std::vector<std::pair<std::string, plazza::Information>> &getReader() const;
-
         void clear();
     };
 }
