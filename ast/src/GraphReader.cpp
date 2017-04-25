@@ -28,3 +28,8 @@ const std::vector<std::pair<std::string, plazza::Information>> &plazza::GraphRea
 {
     return m_reader;
 }
+
+void plazza::GraphReader::clear()
+{
+    m_reader.clear();
+}
