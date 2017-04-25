@@ -115,12 +115,6 @@ public:
     {
         return m_graph;
     }
-
-    void clear()
-    {
-        m_graph.clear();
-        m_stock.clear();
-    }
 };
 
 #endif //CPP_PLAZZA_IGRAPH_HPP
