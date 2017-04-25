@@ -6,14 +6,15 @@ namespace plazza
   {
     for (std::size_t i = 0; i < m_logFiles.size(); i++)
     {
-      m_logFiles[i].close();
+      if (m_logFiles[i].is_open())
+        m_logFiles[i].close();
     }
   }
   
   void Logger::addFile(std::string const &fileName)
   {
     std::ofstream file;
-    file.open(fileName);
+    file.open(fileName, std::ofstream::app);
     m_logFiles.push_back(std::move(file));
   }
 
@@ -27,19 +28,27 @@ namespace plazza
     m_isStdout = false;
   }
 
+    void Logger::enableFileOut()
+    {
+      m_isFileOut = true;
+    }
+
+    void Logger::disableFileOut()
+    {
+      m_isFileOut = false;
+    }
+
   void Logger::log(LogLevel level, std::string const &msg)
   {
     if (level < m_level)
       return ;
     if (m_isStdout)
       log_stdout(msg);
-    if (m_logFiles.size() > 0)
-      log_file(msg);
   }
 
     void Logger::logResult(std::string const &msg)
     {
-      if (m_logFiles.size() > 0)
+      if (m_logFiles.size() > 0 && m_isFileOut)
         log_file(msg);
     }
 
@@ -50,9 +59,7 @@ namespace plazza
 
   void Logger::log_file(std::string const &msg)
   {
-    for (std::size_t i = 0; i < m_logFiles.size(); i++)
-    {
-      m_logFiles[i] << msg << "\n";
-    }
+      m_logFiles[0] << msg << "\n";
+      m_logFiles[0].flush();
   }
 }
