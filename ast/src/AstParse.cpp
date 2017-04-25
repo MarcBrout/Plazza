@@ -76,3 +76,7 @@ void plazza::AstParse::checkError()
     if (count > 1)
         throw std::invalid_argument("Order must have just one INFORMATION_TO_GET");
 }
+
+void plazza::AstParse::clear() {
+    m_graph.clear();
+}

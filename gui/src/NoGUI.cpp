@@ -84,10 +84,7 @@ int plazza::NoGUI::run(size_t p_thread_max)
 {
   std::string l_line;
   plazza::com::SocketInternet sock;
-  plazza::AstParse    l_parser;
-  plazza::GraphReader l_graph_reader;
   plazza::ProcessManager  l_process_manager(&sock);
-  std::vector<std::pair<std::string, plazza::Information>> l_orders;
   std::vector<std::string> l_results;
 
   while (!m_over)
@@ -98,14 +95,16 @@ int plazza::NoGUI::run(size_t p_thread_max)
     }
     else if (l_line.size())
     {
+        plazza::AstParse    l_parser;
+        plazza::GraphReader l_graph_reader;
+        std::vector<std::pair<std::string, plazza::Information>> l_orders;
+
         Logger::getInstance().log(Logger::INFO, l_line);
         l_parser.feedCommand(l_line);
-        l_line.clear();
-        l_graph_reader.clear();
         l_graph_reader.readGraph(l_parser.getGraph());
-        l_orders.clear();
         l_orders = std::move(l_graph_reader.getReader());
         l_process_manager.process(l_orders, p_thread_max);
+        l_line.clear();
     }
 
     l_process_manager.getResults(l_results);
