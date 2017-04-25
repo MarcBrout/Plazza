@@ -106,6 +106,11 @@ public:
         run_graph(count, std::pair<T, U>(p_id, p_type), *(m_graph.begin()), *(m_graph.begin()->s_link.begin()));
     }
 
+    void clear()
+    {
+        m_graph.clear();
+    }
+
     std::vector<AGraphAst<T, U>::s_node> &getGraph()
     {
         return m_graph;

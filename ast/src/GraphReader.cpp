@@ -22,6 +22,7 @@ void plazza::GraphReader::readGraph(AGraphAst<plazza::Type, std::string> &p_grap
                                                                            g_map[l_order.s_data.second]));
         }
     }
+    p_graph.clear();
 }
 
 const std::vector<std::pair<std::string, plazza::Information>> &plazza::GraphReader::getReader() const
