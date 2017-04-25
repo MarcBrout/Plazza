@@ -3,7 +3,6 @@
 //
 
 #include <chrono>
-#include <iostream>
 #include "Timer.hpp"
 
 timer::Timer::Timer(int p_duree) :
