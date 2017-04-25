@@ -18,7 +18,7 @@ namespace plazza
         ProcessManager(com::ICommunication *p_com);
         ~ProcessManager() {};
 
-        void process(std::vector<std::pair<std::string, plazza::Information>> &orders,
+        int process(std::vector<std::pair<std::string, plazza::Information>> &orders,
                      size_t p_max_threads);
         void getResults(std::vector<std::string> &results);
 
@@ -34,8 +34,6 @@ namespace plazza
         ProcessManager(ProcessManager &&) = delete;
         ProcessManager &operator=(ProcessManager const&) = delete;
         ProcessManager &operator=(ProcessManager &&) = delete;
-
-
     };
 }
 

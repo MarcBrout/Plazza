@@ -16,7 +16,7 @@ namespace plazza
         int run(size_t p_thread_max);
 
     private:
-        threadpool::ThreadPool<bool, std::string>  m_threadpool;
+        bool m_over;
     };
 }
 
