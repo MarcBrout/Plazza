@@ -41,13 +41,6 @@ namespace threadpool
 
         ~ThreadPool()
         {
-            if (m_runCalled)
-            {
-                for (size_t i = 0; i < m_maxThread; ++i)
-                {
-                    m_threads[i].join();
-                }
-            }
         }
 
         bool isNotFull(size_t maxQuantity) const

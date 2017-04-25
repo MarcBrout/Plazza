@@ -14,17 +14,20 @@ namespace plazza
     class Forker
     {
     public:
-        bool create_child(std::function<void(Args...)> fn, Args... args)
+        int create_child(std::function<void(Args...)> fn, Args... args)
         {
             pid_t l_pid;
 
             l_pid = fork();
-            if (l_pid)
-                return (true);
-            else if (l_pid < 0)
-                return (false);
-            fn(args...);
-            _exit(EXIT_SUCCESS);
+            if (l_pid == 0)
+            {
+                fn(args...);
+            }
+            else if (l_pid > 0)
+            {
+              return (0);
+            }
+            return (1);
         };
 
         bool operator()(std::function<void(Args...)> fn, Args... args)

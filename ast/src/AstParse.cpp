@@ -22,7 +22,9 @@ void plazza::AstParse::feedCommand(std::string const& p_command)
 
     l_split.split(p_command, ";");
     l_split.moveTokensTo(m_order);
+    l_split.clear();
     feedGraph();
+    m_order.clear();
 }
 
 void plazza::AstParse::feedGraph()
@@ -52,7 +54,6 @@ void plazza::AstParse::feedGraph()
             m_graph.simpleLinkNode(plazza::ORDER);
         m_file.clear();
     }
-    m_order.clear();
 }
 
 AGraphAst<plazza::Type, std::string> &plazza::AstParse::getGraph()
