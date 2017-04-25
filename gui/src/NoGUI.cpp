@@ -97,6 +97,8 @@ int plazza::NoGUI::run(size_t p_thread_max)
     }
     else if (l_line.size())
     {
+        if (l_line == "exit" || l_line == "quit")
+            return (0);
         plazza::AstParse    l_parser;
         plazza::GraphReader l_graph_reader;
         std::vector<std::pair<std::string, plazza::Information>> l_orders;
@@ -113,7 +115,8 @@ int plazza::NoGUI::run(size_t p_thread_max)
     l_process_manager.getResults(l_results);
     for (std::string &r_result : l_results)
     {
-      std::cout << r_result << std::endl;
+        (void)r_result;
+      //std::cout << r_result << std::endl;
     }
     l_results.clear();
     usleep(5000);

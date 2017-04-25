@@ -42,6 +42,7 @@ void oneThread(threadpool::ThreadPool<std::pair<std::string, plazza::Information
                     {
                         fs << r_str << "\n";
                         plazza::Logger::getInstance().log(plazza::Logger::INFO, "Found : " + r_str);
+                        std::cout << r_str << std::endl;
                         p_data.s_resultQ.push(std::move(r_str));
                     }
                     fs.close();
@@ -53,7 +54,7 @@ void oneThread(threadpool::ThreadPool<std::pair<std::string, plazza::Information
             }
         }
     }
-    std::cout << "[THREAD] OVER" << std::endl;
+    //std::cout << "[THREAD] OVER" << std::endl;
     pthread_exit(NULL);
 }
 
@@ -97,12 +98,12 @@ void oneProcess(plazza::com::ICommunication *p_com, std::pair<int, int>socketPai
 
         if (l_threadp.orderSize())
         {
-          std::cout << "[TIMER] RESET" << std::endl;
+          //std::cout << "[TIMER] RESET" << std::endl;
             l_timer.reset();
         }
     }
     l_threadp.setOver(true);
-    std::cout << "[PROCESS] DONE BYE" << std::endl;
+    //std::cout << "[PROCESS] DONE BYE" << std::endl;
     _exit(EXIT_SUCCESS);
 }
 
@@ -135,7 +136,7 @@ int plazza::ProcessManager::process(std::vector<std::pair<std::string, plazza::I
                                      size_t p_max_threads)
 {
 
-    std::cout << "ORDER SIZE : " << orders.size() << std::endl;
+    //std::cout << "ORDER SIZE : " << orders.size() << std::endl;
 
     while (orders.size())
     {
@@ -144,7 +145,7 @@ int plazza::ProcessManager::process(std::vector<std::pair<std::string, plazza::I
         m_com->getAllSizeQueue(w_child_qs);
 
         int w_socket { load_balancer(w_child_qs, p_max_threads) };
-        std::cout << "[LOAD BALANCER] socket :" << w_socket << std::endl;
+        //std::cout << "[LOAD BALANCER] socket :" << w_socket << std::endl;
         if (w_socket > 0)
         {
             std::string w_order { orders.back().first + ";" + std::to_string(orders.back().second) };
@@ -155,7 +156,7 @@ int plazza::ProcessManager::process(std::vector<std::pair<std::string, plazza::I
         else
         {
           std::pair<int, int> socketPair(m_com->addPair());
-            std::cout << "BEFORE FORK PID: " << getpid() << std::endl;
+            //std::cout << "BEFORE FORK PID: " << getpid() << std::endl;
           if (m_forker.create_child(oneProcess, m_com, socketPair, p_max_threads) == -1)
               return (1);
           close(socketPair.second);
@@ -164,13 +165,12 @@ int plazza::ProcessManager::process(std::vector<std::pair<std::string, plazza::I
           m_com->send(socketPair.first, w_order);
           orders.pop_back();
         }
-        usleep(10000);
+        usleep(50000);
     }
     return (0);
 }
 
 void plazza::ProcessManager::getResults(std::vector<std::string> &results)
 {
-  // TODO get results from sockets
-  m_com->getActivity(results); // TODO: push string into resutl
+  m_com->getActivity(results);
 }
