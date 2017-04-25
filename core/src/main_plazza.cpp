@@ -6,8 +6,16 @@
 #include <cstdlib>
 #include <iostream>
 #include <sys/stat.h>
+#include <signal.h>
 #include "Core.hpp"
 #include "Logger.hpp"
+
+void my_handler(int toto)
+{
+    signal(SIGPIPE, &my_handler);
+    (void)toto;
+    std::cout << "GOT SIGPIPE" << std::endl;
+}
 
 int main(int ac, char **av, char **env)
 {
@@ -18,6 +26,8 @@ int main(int ac, char **av, char **env)
         std::cerr << av[0] << ": [NB_THREADS]" << std::endl;
         return (EXIT_FAILURE);
     }
+
+    signal(SIGPIPE, &my_handler);
 
     if (stat("./files", &st) == -1) {
         mkdir("./files", 0700);
