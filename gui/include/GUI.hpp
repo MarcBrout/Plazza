@@ -4,7 +4,6 @@
 
 #ifndef CPP_PLAZZA_GUI_HPP
 # define CPP_PLAZZA_GUI_HPP
-
 # include <QApplication>
 # include <QWidget>
 # include <QPushButton>
@@ -12,6 +11,9 @@
 # include <QCheckBox>
 # include <QLabel>
 # include <QFileDialog>
+# include <QTimer>
+# include <SocketInternet.hpp>
+# include <ProcessManager.hpp>
 # include "CommandGenerator.hpp"
 
 namespace gui
@@ -37,6 +39,11 @@ namespace gui
         CommandGenerator    m_cmdGen;
         QPushButton         m_getFilesButton;
         QPushButton         m_clearFilesButton;
+        QTimer              m_timer;
+        plazza::com::SocketInternet     m_sock;
+        plazza::ProcessManager          m_process_manager;
+        std::vector<std::string>        m_resultQ;
+        int                             m_wait;
 
     private:
         void searchClicked();
@@ -48,6 +55,7 @@ namespace gui
         void searchFieldUpdated();
         void openFiles();
         void clearOpenedFilesList();
+        void updateResults();
     };
 }
 
