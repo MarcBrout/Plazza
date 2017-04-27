@@ -36,7 +36,6 @@ namespace gui
         QCheckBox           m_ipAddress;
         QLabel              m_fileLabel;
         QTextEdit           m_files;
-        CommandGenerator    m_cmdGen;
         QPushButton         m_getFilesButton;
         QPushButton         m_clearFilesButton;
         QTimer              m_timer;
