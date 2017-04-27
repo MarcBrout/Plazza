@@ -3,10 +3,14 @@ MK_COMMON_DIR=  ./../mk/
 
 include $(MK_COMMON_DIR)defs.mk $(MK_THIS)local_defs.mk
 
-SRC=    $(addprefix $(SRC_DIR), \
-	NoGUI.cpp		\
+ifeq ($(UI), yes)
+  SRC= $(addprefix $(SRC_DIR),	\
+	GUI.cpp 		\
 	)
+else
+  SRC= $(addprefix $(SRC_DIR),	\
+	NoGUI.cpp 		\
+	)
+endif
 
 include $(MK_COMMON_DIR)rules.mk
-
-#GUI.cpp

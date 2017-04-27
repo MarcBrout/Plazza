@@ -4,12 +4,24 @@ MK_COMMON_DIR=  ./../mk/
 include $(MK_COMMON_DIR)defs.mk $(MK_THIS)local_defs.mk
 
 SRC=    $(addprefix $(SRC_DIR), \
-	Core.cpp 		\
 	ProcessManager.cpp 	\
 	Timer.cpp 		\
-	main_plazza.cpp		\
 	)
 
-include $(MK_COMMON_DIR)rules.mk
+ifeq ($(UI), yes)
 
-#main_plazza_gui.cpp
+SRC +=    $(addprefix $(SRC_DIR), \
+	CoreGui.cpp 		\
+	main_plazza_gui.cpp	\
+	)
+
+else
+
+SRC +=    $(addprefix $(SRC_DIR), \
+	Core.cpp 		\
+	main_plazza.cpp 	\
+	)
+
+endif
+
+include $(MK_COMMON_DIR)rules.mk

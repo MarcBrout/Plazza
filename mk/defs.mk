@@ -4,6 +4,8 @@ DEBUG=          no
 
 NAME=		tmp
 
+UI=		no
+
 CXXFLAGS=       -W -Wall -Wextra -Wpointer-arith -std=c++14 #-Weffc++
 
 LDFLAGS=
