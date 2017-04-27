@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 
 include_directories(
-        /usr/include/Qt5/QtWidgets
+        /home/brout_m/Qt5.7.0/5.7/gcc_64/include
         /usr/local/include
         /usr/include
         ./command_generator/include
