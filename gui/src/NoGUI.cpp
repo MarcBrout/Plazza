@@ -59,6 +59,33 @@ int readSelect(std::string &p_output)
     }
 }
 
+int outputCheck(std::string &p_line)
+{
+    if (p_line.find_first_of(" \t") == std::string::npos)
+        return 0;
+    if (p_line.substr(0, p_line.find_first_of(" \t")) == "enable")
+    {
+        if (p_line.substr(p_line.find_first_of(" \t") + 1) == "file")
+            plazza::Logger::getInstance().enableFileOut();
+        else if (p_line.substr(p_line.find_first_of(" \t") + 1) == "stdout")
+            plazza::Logger::getInstance().enableStdout();
+        else
+            return 0;
+        return 1;
+    }
+    else if (p_line.substr(0, p_line.find_first_of(" \t")) == "disable")
+    {
+        if (p_line.substr(p_line.find_first_of(" \t") + 1) == "file")
+            plazza::Logger::getInstance().disableFileOut();
+        else if (p_line.substr(p_line.find_first_of(" \t") + 1) == "stdout")
+            plazza::Logger::getInstance().disableStdout();
+        else
+            return 0;
+        return 1;
+    }
+    return (0);
+}
+
 int plazza::NoGUI::run(size_t p_thread_max)
 {
   std::string l_line;
@@ -79,7 +106,12 @@ int plazza::NoGUI::run(size_t p_thread_max)
     {
         if (l_line == "exit" || l_line == "quit")
             return (0);
-        plazza::AstParse l_parser;
+        if (outputCheck(l_line))
+        {
+            l_line.clear();
+            continue;
+        }
+        plazza::AstParse    l_parser;
         plazza::GraphReader l_graph_reader;
         std::vector<std::pair<std::string, plazza::Information>> l_orders;
 
