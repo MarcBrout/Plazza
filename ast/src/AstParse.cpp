@@ -16,18 +16,23 @@ plazza::AstParse::AstParse() :
 {
 }
 
-void plazza::AstParse::feedCommand(std::string const& p_command)
+int plazza::AstParse::feedCommand(std::string const& p_command)
 {
     Splitter l_split;
 
     l_split.split(p_command, ";");
     l_split.moveTokensTo(m_order);
     l_split.clear();
-    feedGraph();
+    if (feedGraph())
+    {
+        m_order.clear();
+        return 1;
+    }
     m_order.clear();
+    return 0;
 }
 
-void plazza::AstParse::feedGraph()
+int plazza::AstParse::feedGraph()
 {
     Splitter l_split;
     for (std::string l_order : m_order)
@@ -41,7 +46,7 @@ void plazza::AstParse::feedGraph()
         {
             std::cerr << "Error: " << e.what() << std::endl;
             m_file.clear();
-            continue;
+            return 1;
         }
         for (std::vector<std::string>::iterator it = m_file.begin(); it != m_file.end(); it++)
         {
@@ -54,6 +59,7 @@ void plazza::AstParse::feedGraph()
             m_graph.simpleLinkNode(plazza::ORDER);
         m_file.clear();
     }
+    return 0;
 }
 
 AGraphAst<plazza::Type, std::string> &plazza::AstParse::getGraph()

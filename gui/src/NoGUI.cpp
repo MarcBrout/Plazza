@@ -136,7 +136,8 @@ int plazza::NoGUI::run(size_t p_thread_max)
         std::vector<std::pair<std::string, plazza::Information>> l_orders;
 
         Logger::getInstance().log(Logger::INFO, l_line);
-        l_parser.feedCommand(l_line);
+        if (l_parser.feedCommand(l_line))
+            return 1;
         l_graph_reader.readGraph(l_parser.getGraph());
         l_orders = std::move(l_graph_reader.getReader());
         l_process_manager.process(l_orders, p_thread_max);
