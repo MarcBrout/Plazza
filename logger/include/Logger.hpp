@@ -31,7 +31,10 @@ namespace plazza
       void addFile(std::string const &fileName);
       void enableStdout();
       void disableStdout();
+      void enableFileOut();
+      void disableFileOut();
       void log(LogLevel, std::string const &msg);
+      void logResult(std::string const &);
 
     private:
       void log_stdout(std::string const &msg);
@@ -40,6 +43,7 @@ namespace plazza
     private:
       LogLevel m_level;
       bool m_isStdout;
+      bool m_isFileOut;
       std::vector<std::ofstream> m_logFiles;
   };
 }

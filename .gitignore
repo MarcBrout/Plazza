@@ -64,3 +64,5 @@ cmake-build-debug
 #osx
 .DS_Store
 
+#logs
+files/*
