@@ -2,6 +2,9 @@
 // Created by brout_m on 13/04/17.
 //
 
+#include <AstParse.hpp>
+#include <GraphReader.hpp>
+#include <wait.h>
 #include "GUI.hpp"
 
 gui::GUI::GUI(int p_width, int p_height, QWidget *p_parent) :
@@ -20,7 +23,12 @@ gui::GUI::GUI(int p_width, int p_height, QWidget *p_parent) :
         m_files(this),
         m_cmdGen({"EMAIL_ADDRESS", "PHONE_NUMBER", "IP_ADDRESS"}),
         m_getFilesButton("Open Files", this),
-        m_clearFilesButton("Clear", this)
+        m_clearFilesButton("Clear", this),
+        m_timer(this),
+        m_sock(),
+        m_process_manager(&m_sock),
+        m_resultQ(),
+        m_wait(0)
 
 {
     initializePositions();
@@ -39,7 +47,16 @@ void gui::GUI::searchClicked()
     if (m_phoneNumber.isChecked())
         m_cmdGen.feed(l_str, "PHONE_NUMBER");
 
-    m_results.setText(QString(m_cmdGen.getCmd().c_str()));
+    plazza::AstParse    l_parser;
+    plazza::GraphReader l_graph_reader;
+    std::vector<std::pair<std::string, plazza::Information>> l_orders;
+    std::string l_cmd = m_cmdGen.getCmd();
+
+    l_parser.feedCommand(l_cmd);
+    l_graph_reader.readGraph(l_parser.getGraph());
+    l_orders = std::move(l_graph_reader.getReader());
+    m_process_manager.process(l_orders, 5);
+
     m_cmdGen.clear();
 }
 
@@ -122,6 +139,8 @@ void gui::GUI::connectGui()
             &GUI::openFiles);
     connect(&m_clearFilesButton, &QAbstractButton::clicked, this,
             &GUI::clearOpenedFilesList);
+    connect(&m_timer, &QTimer::timeout, this, &GUI::updateResults);
+    m_timer.start(500);
 }
 
 void gui::GUI::searchFieldUpdated()
@@ -154,4 +173,27 @@ void gui::GUI::clearOpenedFilesList()
 {
     m_files.clear();
     m_clearFilesButton.setDisabled(true);
+}
+
+void gui::GUI::updateResults()
+{
+    std::vector<std::string> l_results;
+    std::string l_str = m_results.toPlainText().toUtf8().toStdString();
+
+    m_process_manager.getResults(l_results);
+
+    for (std::string &r_str : l_results)
+    {
+        if (l_str.size())
+        {
+            l_str += "\n" + r_str;
+        }
+        else
+        {
+            l_str = r_str;
+        }
+    }
+
+    m_results.setText(QString(l_str.c_str()));
+    waitpid(-1, &m_wait, WNOHANG);
 }
