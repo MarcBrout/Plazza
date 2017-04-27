@@ -6,7 +6,7 @@ LOCAL_CXXFLAGS+= -I ./../core/include -I ./../thread_pool/include/ -I ./../commu
 
 ifeq ($(UI), yes)
  LOCAL_CXXFLAGS += -I /usr/include/Qt5 -I /usr/include/Qt5/QtWidgets -I /usr/include/qt/QtWidgets/ -lQt5Widgets -fPIC -I /usr/include/qt/
- LOCAL_LDFLAGS += -lQt5Widgets -lQt5Core -lQt5Gui
+ LOCAL_LDFLAGS += -Wl, -rpath=/usr/lib/Qt5 -L/usr/lib/Qt5 -lQt5Widgets -lQt5Core -lQt5Gui
 endif
 
 
