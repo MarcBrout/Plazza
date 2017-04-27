@@ -14,7 +14,6 @@ void my_handler(int toto)
 {
     signal(SIGPIPE, &my_handler);
     (void)toto;
-    std::cout << "GOT SIGPIPE" << std::endl;
 }
 
 int main(int ac, char **av, char **env)

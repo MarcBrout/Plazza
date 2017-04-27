@@ -5,6 +5,7 @@
 #include <AstParse.hpp>
 #include <GraphReader.hpp>
 #include <wait.h>
+#include <iostream>
 #include "GUI.hpp"
 
 gui::GUI::GUI(int p_width, int p_height, QWidget *p_parent) :
@@ -21,7 +22,6 @@ gui::GUI::GUI(int p_width, int p_height, QWidget *p_parent) :
         m_ipAddress("ip addresses", this),
         m_fileLabel("Files to search : ", this),
         m_files(this),
-        m_cmdGen({"EMAIL_ADDRESS", "PHONE_NUMBER", "IP_ADDRESS"}),
         m_getFilesButton("Open Files", this),
         m_clearFilesButton("Clear", this),
         m_timer(this),
@@ -38,6 +38,8 @@ gui::GUI::GUI(int p_width, int p_height, QWidget *p_parent) :
 
 void gui::GUI::searchClicked()
 {
+    CommandGenerator m_cmdGen({"EMAIL_ADDRESS", "PHONE_NUMBER", "IP_ADDRESS"});
+
     std::string l_str = m_files.toPlainText().toUtf8().toStdString();
 
     if (m_emailAddress.isChecked())
@@ -178,22 +180,23 @@ void gui::GUI::clearOpenedFilesList()
 void gui::GUI::updateResults()
 {
     std::vector<std::string> l_results;
-    std::string l_str = m_results.toPlainText().toUtf8().toStdString();
-
     m_process_manager.getResults(l_results);
 
-    for (std::string &r_str : l_results)
+    if (l_results.size())
     {
-        if (l_str.size())
-        {
-            l_str += "\n" + r_str;
-        }
-        else
-        {
-            l_str = r_str;
-        }
-    }
+        std::string l_str = m_results.toPlainText().toUtf8().toStdString();
 
-    m_results.setText(QString(l_str.c_str()));
+        for (std::string &r_str : l_results) {
+            if (l_str.size()) {
+                l_str += "\n" + r_str;
+            } else {
+                l_str = r_str;
+            }
+        }
+
+        m_results.setText(QString(l_str.c_str()));
+        l_results.clear();
+    }
     waitpid(-1, &m_wait, WNOHANG);
+    m_timer.start(500);
 }

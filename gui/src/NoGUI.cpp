@@ -112,7 +112,7 @@ int plazza::NoGUI::run(size_t p_thread_max)
 {
   std::string l_line;
   plazza::com::SocketInternet sock;
-  plazza::ProcessManager  l_process_manager(&sock);
+  plazza::ProcessManager l_process_manager(&sock);
   std::vector<std::string> l_results;
   int bite;
 
@@ -153,6 +153,5 @@ int plazza::NoGUI::run(size_t p_thread_max)
     l_results.clear();
     usleep(5000);
   }
-  std::cout << "Quit biatch !" << std::endl;
   return (0);
 }
