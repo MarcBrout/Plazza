@@ -14,29 +14,7 @@
 #include "NoGUI.hpp"
 #include "SocketInternet.hpp"
 #include "Logger.hpp"
-
-void read_cin(threadpool::ThreadPool<bool, std::string>::Data &p_data)
-{
-  while (!p_data.s_over)
-  {
-
-    std::string l_line;
-
-    std::getline(std::cin, l_line);
-
-      if (std::cin.eof())
-    {
-      p_data.s_resultQ.push("");
-      break;
-    }
-    else if (!l_line.empty())
-    {
-      p_data.s_resultQ.push(std::move(l_line));
-    }
-    std::cin.clear();
-    std::cout.clear();
-  }
-}
+#include "Timer.hpp"
 
 plazza::NoGUI::NoGUI() :
         m_over(false)
@@ -72,7 +50,7 @@ int readSelect(std::string &p_output)
         {
             if ((l_rd = read(0, buffer, 4095)) <= 0)
             {
-                return (1);
+                return (0);
             }
             buffer[l_rd - 1] = 0;
             p_output = buffer;
@@ -114,11 +92,13 @@ int plazza::NoGUI::run(size_t p_thread_max)
   plazza::com::SocketInternet sock;
   plazza::ProcessManager l_process_manager(&sock);
   std::vector<std::string> l_results;
-  int bite;
+    timer::Timer   l_timer(5000);
+  int bit;
 
+    l_timer.start();
   while (!m_over)
   {
-    if (readSelect(l_line) == 1)
+    if (readSelect(l_line) == 1 || l_timer.reached())
     {
         m_over = true;
     }
@@ -144,7 +124,9 @@ int plazza::NoGUI::run(size_t p_thread_max)
         l_line.clear();
     }
 
-    waitpid(-1, &bite, WNOHANG);
+    if (waitpid(-1, &bit, WNOHANG) == 0)
+        l_timer.reset();
+
     l_process_manager.getResults(l_results);
     for (std::string &r_result : l_results)
     {
