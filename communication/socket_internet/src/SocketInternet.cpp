@@ -34,7 +34,6 @@ namespace plazza
     {
       for (unsigned int i = 0; i < m_fds.size(); i++)
       {
-        //std::cout << "SENDALL:'" << msg << "' TO SOCKET: " << m_fds[i].first << std::endl;
         if (write(m_fds[i].first, msg.c_str(), msg.length()) != static_cast<ssize_t>(msg.length()))
         {
           return (1);
@@ -45,19 +44,18 @@ namespace plazza
 
     int SocketInternet::send(int socket, std::string const &msg)
     {
+      std::cout << "SEND:" << msg << "!" << std::endl;
       char buffer[1024] = {0};
       if (msg.length() >= 1024)
         return (1);
       uint8_t header = msg.length();
       buffer[0] = header;
-      for (int i = 1; i < msg.length(); i++)
+      for (unsigned int i = 0; i < msg.length(); i++)
       {
-        buffer[i] = msg.at(i);
+        buffer[i + 1] = msg.at(i);
       }
-      //plazza::Logger::getInstance().log(plazza::Logger::INFO, "SEND TO");
-      //std::cout << "SEND:'" << msg << "' TO SOCKET: " << socket << std::endl;
-      size_t size = msg.length();
-      if (write(socket, buffer, header + 1) != static_cast<ssize_t>(size))
+      size_t size = header + 1;
+      if (write(socket, buffer, size) != static_cast<ssize_t>(size))
         return (1);
       return (0);
     }
@@ -108,10 +106,22 @@ namespace plazza
       {
         if (FD_ISSET(sock, &readfds)) 
         {
-          if ((len = read(sock, buffer, 1023)) == 0)
+          if ((len = read(sock, buffer, 1)) == 0)
           {
             close(sock);
             return (1);
+          }
+          else
+          {
+            if ((len = read(sock, buffer, buffer[0])) == 0)
+            {
+              close(sock);
+              return (1);
+            }
+            else
+            {
+                buffer[len] = '\0';
+            }
           }
           buffer[len] = 0;
           check = buffer;
@@ -178,13 +188,14 @@ namespace plazza
           {
             if ((valread = read(sd, buffer, 1)) == 0)
             {
+              std::cout << "DEADEADEADEAD" << std::endl;
               //std::cerr << "client disconnected" << std::endl;
               close(sd);
               m_fds.erase(m_fds.begin() + i);
-              //CLOSE FROM VECTOR -> REMOVE PAIR
             }
             else
             {
+              int a = buffer[0];
               if ((valread = read(sd, buffer, buffer[0])) == 0)
               {
                 close(sd);
@@ -193,6 +204,7 @@ namespace plazza
               else
               {
                 buffer[valread] = '\0';
+                std::cout << "$" << buffer << "$" << std::endl;
                 //plazza::Logger::getInstance().log(plazza::Logger::INFO, buffer);
                 results.push_back(std::move(std::string(buffer)));
               }
