@@ -19,13 +19,13 @@ namespace plazza
         AGraphAst<plazza::Type, std::string> m_graph;
 
         void checkError();
-        void feedGraph();
+        int feedGraph();
 
     public:
         AstParse();
         ~AstParse() {};
         AGraphAst<plazza::Type, std::string> &getGraph();
-        void feedCommand(std::string const& p_command);
+        int feedCommand(std::string const& p_command);
         void clear();
     };
 }

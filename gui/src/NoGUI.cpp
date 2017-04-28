@@ -88,52 +88,76 @@ int outputCheck(std::string &p_line)
 
 int plazza::NoGUI::run(size_t p_thread_max)
 {
-  std::string l_line;
-  plazza::com::SocketInternet sock;
-  plazza::ProcessManager l_process_manager(&sock);
-  std::vector<std::string> l_results;
+    std::string l_line;
+    std::vector<std::string> l_cuttedLine;
+    plazza::com::SocketInternet sock;
+    plazza::ProcessManager l_process_manager(&sock);
+    std::vector<std::string> l_results;
     timer::Timer   l_timer(5000);
-  int bit;
+    Splitter    l_splitter;
+
+    int bit;
+    int ret {0};
 
     l_timer.start();
-  while (!m_over)
-  {
-    if (readSelect(l_line) == 1 || l_timer.reached())
+    while (!m_over)
     {
-        m_over = true;
-    }
-    else if (l_line.size())
-    {
-        if (l_line == "exit" || l_line == "quit")
-            return (0);
-        if (outputCheck(l_line))
+        if (readSelect(l_line) == 1 || l_timer.reached())
         {
-            l_line.clear();
-            continue;
+            m_over = true;
         }
-        plazza::AstParse    l_parser;
-        plazza::GraphReader l_graph_reader;
-        std::vector<std::pair<std::string, plazza::Information>> l_orders;
+        else if (l_line.size() && !ret)
+        {
+            l_splitter.split(l_line, "\n");
+            l_splitter.moveTokensTo(l_cuttedLine);
 
-        Logger::getInstance().log(Logger::INFO, l_line);
-        l_parser.feedCommand(l_line);
-        l_graph_reader.readGraph(l_parser.getGraph());
-        l_orders = std::move(l_graph_reader.getReader());
-        l_process_manager.process(l_orders, p_thread_max);
-        l_line.clear();
+            if (l_cuttedLine.size())
+            {
+                for (std::string r_line : l_cuttedLine)
+                {
+                    if (r_line == "exit" || r_line == "quit")
+                        return (ret);
+
+                    if (outputCheck(r_line))
+                    {
+                        r_line.clear();
+                        continue;
+                    }
+
+                    plazza::AstParse l_parser;
+                    plazza::GraphReader l_graph_reader;
+                    std::vector<std::pair<std::string, plazza::Information>> l_orders;
+
+                    Logger::getInstance().log(Logger::INFO, r_line);
+                    if (l_parser.feedCommand(r_line)) {
+                        ret = 1;
+                        break;
+                    }
+
+                    l_graph_reader.readGraph(l_parser.getGraph());
+                    l_orders = std::move(l_graph_reader.getReader());
+                    l_process_manager.process(l_orders, p_thread_max);
+                }
+                l_cuttedLine.clear();
+            }
+            l_line.clear();
+        }
+
+        if (waitpid(-1, &bit, WNOHANG) == 0)
+            l_timer.reset();
+
+        l_process_manager.getResults(l_results);
+        for (std::string &r_result : l_results)
+        {
+            (void)r_result;
+            //std::cout << r_result << std::endl;
+        }
+        l_results.clear();
+        usleep(5000);
     }
-
-    if (waitpid(-1, &bit, WNOHANG) == 0)
-        l_timer.reset();
-
-    l_process_manager.getResults(l_results);
-    for (std::string &r_result : l_results)
+    while (waitpid(-1, &bit, WNOHANG) == 0)
     {
-        (void)r_result;
-      //std::cout << r_result << std::endl;
+        usleep(10);
     }
-    l_results.clear();
-    usleep(5000);
-  }
-  return (0);
+    return (ret);
 }
