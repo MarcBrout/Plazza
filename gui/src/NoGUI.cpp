@@ -139,6 +139,8 @@ int plazza::NoGUI::run(size_t p_thread_max)
                     l_process_manager.process(l_orders, p_thread_max);
                 }
                 l_cuttedLine.clear();
+                if (ret == 1)
+                    break;
             }
             l_line.clear();
         }
