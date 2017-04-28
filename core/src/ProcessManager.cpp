@@ -96,7 +96,6 @@ void oneProcess(plazza::com::ICommunication *p_com, std::pair<int, int>socketPai
 
         if (l_threadp.orderSize())
         {
-          std::cout << "TIMER RESET" << std::endl;
             l_timer.reset();
         }
     }
