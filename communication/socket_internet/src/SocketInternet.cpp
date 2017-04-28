@@ -44,7 +44,6 @@ namespace plazza
 
     int SocketInternet::send(int socket, std::string const &msg)
     {
-      std::cout << "SEND:" << msg << "!" << std::endl;
       char buffer[1024] = {0};
       if (msg.length() >= 1024)
         return (1);
@@ -188,14 +187,12 @@ namespace plazza
           {
             if ((valread = read(sd, buffer, 1)) == 0)
             {
-              std::cout << "DEADEADEADEAD" << std::endl;
               //std::cerr << "client disconnected" << std::endl;
               close(sd);
               m_fds.erase(m_fds.begin() + i);
             }
             else
             {
-              int a = buffer[0];
               if ((valread = read(sd, buffer, buffer[0])) == 0)
               {
                 close(sd);
@@ -204,7 +201,6 @@ namespace plazza
               else
               {
                 buffer[valread] = '\0';
-                std::cout << "$" << buffer << "$" << std::endl;
                 //plazza::Logger::getInstance().log(plazza::Logger::INFO, buffer);
                 results.push_back(std::move(std::string(buffer)));
               }
