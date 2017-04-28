@@ -131,16 +131,15 @@ int plazza::NoGUI::run(size_t p_thread_max)
                     Logger::getInstance().log(Logger::INFO, r_line);
                     if (l_parser.feedCommand(r_line)) {
                         ret = 1;
-                        break;
                     }
 
                     l_graph_reader.readGraph(l_parser.getGraph());
                     l_orders = std::move(l_graph_reader.getReader());
                     l_process_manager.process(l_orders, p_thread_max);
                 }
-                l_cuttedLine.clear();
                 if (ret == 1)
                     break;
+                l_cuttedLine.clear();
             }
             l_line.clear();
         }
