@@ -50,7 +50,7 @@ int readSelect(std::string &p_output)
         {
             if ((l_rd = read(0, buffer, 4095)) <= 0)
             {
-                return (0);
+                return (1);
             }
             buffer[l_rd - 1] = 0;
             p_output = buffer;
@@ -99,7 +99,7 @@ int plazza::NoGUI::run(size_t p_thread_max)
     int bit;
     int ret {0};
 
-    l_timer.start();
+   l_timer.start();
     while (!m_over)
     {
         if (readSelect(l_line) == 1 || l_timer.reached())
@@ -148,11 +148,6 @@ int plazza::NoGUI::run(size_t p_thread_max)
             l_timer.reset();
 
         l_process_manager.getResults(l_results);
-        for (std::string &r_result : l_results)
-        {
-            (void)r_result;
-            //std::cout << r_result << std::endl;
-        }
         l_results.clear();
         usleep(5000);
     }

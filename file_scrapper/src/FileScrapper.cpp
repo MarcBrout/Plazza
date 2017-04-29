@@ -33,23 +33,6 @@ void plazza::FileScrapper::scrapFile()
         if (r_reg.size())
             m_results.insert(m_results.end(), r_reg.cbegin(), r_reg.cend());
     }
-
-/*
-    int l_key = 1;
-    while (!m_results.size() && l_key < 256)
-    {
-        bruteForce(l_rawData, &m_XORCipher, l_key);
-        ++l_key;
-    }
-
-    l_key = -25;
-    while(!m_results.size() && l_key < 26)
-    {
-        if (l_key)
-            bruteForce(l_rawData, &m_CesarCipher, l_key);
-        ++l_key;
-    }
-*/
 }
 
 void plazza::FileScrapper::moveResultsTo(std::vector<std::string> &out)
